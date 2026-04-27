@@ -4,89 +4,54 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 216 33% 97%;
+    --foreground: 220 40% 10%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 220 40% 10%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 220 40% 10%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 220 65% 22%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 210 30% 92%;
+    --secondary-foreground: 220 40% 18%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 214 25% 93%;
+    --muted-foreground: 215 20% 48%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 35 85% 48%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 214 22% 86%;
+    --input: 214 22% 86%;
+    --ring: 220 65% 22%;
 
-    --radius: 0.5rem;
+    --radius: 0.375rem;
 
-    --sidebar-background: 0 0% 98%;
+    --sidebar-background: 220 50% 16%;
+    --sidebar-foreground: 210 30% 88%;
+    --sidebar-primary: 0 0% 100%;
+    --sidebar-primary-foreground: 220 50% 16%;
+    --sidebar-accent: 220 45% 22%;
+    --sidebar-accent-foreground: 210 30% 92%;
+    --sidebar-border: 220 40% 24%;
+    --sidebar-ring: 35 85% 48%;
 
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --gov-navy: 220 60% 18%;
+    --gov-navy-light: 220 45% 28%;
+    --gov-gold: 35 85% 48%;
+    --gov-gold-light: 40 90% 62%;
+    --gov-green: 142 55% 35%;
+    --gov-green-light: 142 45% 44%;
+    --gov-red: 4 72% 51%;
+    --gov-surface: 216 33% 97%;
+    --gov-line: 214 22% 86%;
   }
 }
 
@@ -97,5 +62,140 @@
 
   body {
     @apply bg-background text-foreground;
+    font-family: "Golos Text", sans-serif;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "Golos Text", sans-serif;
+    font-weight: 700;
+  }
+
+  .font-mono-gov {
+    font-family: "IBM Plex Mono", monospace;
+  }
+}
+
+@layer utilities {
+  .bg-gov-navy {
+    background-color: hsl(var(--gov-navy));
+  }
+  .bg-gov-navy-light {
+    background-color: hsl(var(--gov-navy-light));
+  }
+  .bg-gov-gold {
+    background-color: hsl(var(--gov-gold));
+  }
+  .bg-gov-green {
+    background-color: hsl(var(--gov-green));
+  }
+  .text-gov-navy {
+    color: hsl(var(--gov-navy));
+  }
+  .text-gov-gold {
+    color: hsl(var(--gov-gold));
+  }
+  .text-gov-green {
+    color: hsl(var(--gov-green));
+  }
+  .text-gov-red {
+    color: hsl(var(--gov-red));
+  }
+  .border-gov-line {
+    border-color: hsl(var(--gov-line));
+  }
+  .border-gov-gold {
+    border-color: hsl(var(--gov-gold));
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.4s ease-out both;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.35s ease-out both;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .sidebar-item-active {
+    background-color: hsl(var(--gov-gold));
+    color: #fff;
+  }
+
+  .sidebar-item {
+    transition:
+      background-color 0.15s ease,
+      color 0.15s ease;
+  }
+
+  .sidebar-item:hover:not(.sidebar-item-active) {
+    background-color: hsl(var(--sidebar-accent));
+    color: hsl(var(--sidebar-accent-foreground));
+  }
+
+  .stat-card {
+    border-left: 3px solid hsl(var(--gov-gold));
+  }
+
+  .progress-bar {
+    height: 6px;
+    border-radius: 3px;
+    background-color: hsl(var(--muted));
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: linear-gradient(
+      90deg,
+      hsl(var(--gov-navy)),
+      hsl(var(--gov-navy-light))
+    );
+    transition: width 0.8s ease;
+  }
+
+  .badge-status-new {
+    background-color: #e8f0fe;
+    color: #1a56db;
+  }
+  .badge-status-review {
+    background-color: #fef3c7;
+    color: #92400e;
+  }
+  .badge-status-approved {
+    background-color: #d1fae5;
+    color: #065f46;
+  }
+  .badge-status-rejected {
+    background-color: #fee2e2;
+    color: #991b1b;
+  }
+  .badge-status-completed {
+    background-color: #ede9fe;
+    color: #5b21b6;
   }
 }
