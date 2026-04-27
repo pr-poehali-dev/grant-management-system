@@ -78,25 +78,15 @@ export default function App() {
               <Icon name="Menu" size={20} />
             </button>
 
-            {/* Логотип с гербом */}
-            <button onClick={() => navigate('home')} className="flex items-center gap-3">
-              {/* Цифровой герб РФ (SVG) */}
-              <svg viewBox="0 0 40 48" width="32" height="38" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Герб Российской Федерации">
-                <path d="M20 2C20 2 4 8 4 22C4 34 20 46 20 46C20 46 36 34 36 22C36 8 20 2 20 2Z" fill="#D52B1E"/>
-                {/* Орёл — упрощённый силуэт */}
-                <path d="M20 8L17 13H13L16 16L15 21L20 18L25 21L24 16L27 13H23L20 8Z" fill="#FFD700"/>
-                <path d="M12 14C10 15 9 17 10 19C11 20 13 20 14 19" fill="#FFD700"/>
-                <path d="M28 14C30 15 31 17 30 19C29 20 27 20 26 19" fill="#FFD700"/>
-                <path d="M16 20C16 24 18 28 20 30C22 28 24 24 24 20" fill="#D52B1E"/>
-                <rect x="18" y="20" width="4" height="8" rx="1" fill="#FFD700"/>
-              </svg>
-
-              <div className="leading-tight">
-                <div className="text-white font-bold text-sm tracking-tight">АСУГ СХ СО</div>
-                <div className="text-white/55 text-xs hidden sm:block" style={{ fontSize: 11 }}>
-                  Минсельхозпрод Самарской области
-                </div>
+            {/* Логотип */}
+            <button onClick={() => navigate('home')} className="flex items-center gap-2">
+              <div
+                className="w-8 h-8 rounded flex items-center justify-center"
+                style={{ backgroundColor: '#D52B1E' }}
+              >
+                <Icon name="Wheat" size={18} className="text-white" />
               </div>
+              <div className="text-white font-bold text-lg tracking-tight">АГРОГРАНТ</div>
             </button>
           </div>
 
@@ -109,13 +99,6 @@ export default function App() {
             <button className="relative text-white/70 hover:text-white">
               <Icon name="Bell" size={18} />
               <span className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 rounded-full text-[9px] font-bold text-white flex items-center justify-center" style={{ backgroundColor: '#D52B1E' }}>3</span>
-            </button>
-            <button
-              onClick={() => navigate('cabinet')}
-              className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold"
-              style={{ backgroundColor: '#003791' }}
-            >
-              ИВ
             </button>
           </div>
         </header>
