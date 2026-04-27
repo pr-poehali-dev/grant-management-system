@@ -139,10 +139,27 @@ body.accessible-large .text-base {
 
   body {
     @apply bg-background text-foreground;
-    font-family: "Golos Text", sans-serif;
+    font-family:
+      "Golos Text", "Inter", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
     /* 18pt ≈ 24px на десктопе, 16pt ≈ 21px на мобиле */
     font-size: 18px;
     line-height: 1.6;
+    /* Отключаем декоративные лигатуры и альтернативы — иначе ВЕРХНИЙ регистр
+       в некоторых сочетаниях рендерится как искажённый текст. */
+    font-variant-ligatures: none;
+    font-feature-settings:
+      "liga" 0,
+      "clig" 0,
+      "dlig" 0,
+      "calt" 0,
+      "salt" 0;
+    -webkit-font-feature-settings:
+      "liga" 0,
+      "clig" 0,
+      "dlig" 0,
+      "calt" 0,
+      "salt" 0;
+    text-rendering: optimizeLegibility;
   }
 
   @media (max-width: 768px) {
