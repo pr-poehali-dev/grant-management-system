@@ -16,9 +16,14 @@
     <meta name="author" content="ООО «МАТ-Лабс»"/>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 
+    <!-- Канонический адрес сайта в кириллице -->
+    <link rel="canonical" href="https://агрогрант.рф/">
+    <link rel="alternate" hreflang="ru" href="https://агрогрант.рф/">
+
     <meta property="og:type" content="website">
     <meta property="og:locale" content="ru_RU">
     <meta property="og:site_name" content="АГРОГРАНТ">
+    <meta property="og:url" content="https://агрогрант.рф/">
     <meta property="og:title" content="АГРОГРАНТ — поддержка АПК Самарской области">
     <meta property="og:description" content="Автоматизированная система учёта и контроля расходования грантов в сельском хозяйстве Самарской области. Подача отчётности, проверка целевого использования средств, прозрачная аналитика.">
     <meta property="og:image" content="https://cdn.poehali.dev/projects/5f704870-3c6f-4f1f-b08b-d23becd31e85/files/b8ebef3e-5f16-4e93-b45d-84237119e343.jpg">
@@ -27,9 +32,24 @@
     <meta property="og:image:height" content="1200">
 
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://агрогрант.рф/">
     <meta name="twitter:title" content="АГРОГРАНТ — поддержка АПК Самарской области">
     <meta name="twitter:description" content="Автоматизированная система учёта и контроля расходования грантов в сельском хозяйстве Самарской области.">
     <meta name="twitter:image" content="https://cdn.poehali.dev/projects/5f704870-3c6f-4f1f-b08b-d23becd31e85/files/b8ebef3e-5f16-4e93-b45d-84237119e343.jpg">
+
+    <!-- Подменяем punycode в адресной строке на кириллический домен -->
+    <script>
+      (function () {
+        try {
+          var host = window.location.hostname || '';
+          // Если домен открыт через punycode-вариант — заменяем на кириллицу в адресной строке
+          if (host === 'xn--80aaadcg6ba1aebgi6a3a.xn--p1ai' || host === 'xn--80aaadcg6ba1aebgi6a3a.xn--p1ai.') {
+            var newUrl = window.location.protocol + '//агрогрант.рф' + window.location.pathname + window.location.search + window.location.hash;
+            window.history.replaceState(null, '', newUrl);
+          }
+        } catch (e) { /* silent */ }
+      })();
+    </script>
 
     <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS COMMENT! -->
 

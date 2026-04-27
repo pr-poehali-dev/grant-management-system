@@ -277,9 +277,13 @@ export default function App() {
               <div className="px-6 py-5 grid grid-cols-1 md:grid-cols-3 gap-6 border-b border-white/10">
                 <div>
                   <div className="text-sm font-bold mb-2">АГРОГРАНТ</div>
-                  <div className="text-xs text-white/50 leading-relaxed">
+                  <div className="text-xs text-white/50 leading-relaxed mb-3">
                     Автоматизированная система учёта и контроля расходования грантов в сельском хозяйстве Самарской области
                   </div>
+                  <a href="https://агрогрант.рф" className="inline-flex items-center gap-1.5 text-xs text-white/80 hover:text-white transition-colors font-semibold">
+                    <Icon name="Globe" size={12} />
+                    агрогрант.рф
+                  </a>
                 </div>
                 <div>
                   <div className="text-xs font-semibold text-white/60 uppercase tracking-wide mb-2">Разделы</div>
