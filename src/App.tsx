@@ -12,20 +12,29 @@ import VerificationPage from '@/pages/VerificationPage';
 import AdminPage from '@/pages/AdminPage';
 import HelpPage from '@/pages/HelpPage';
 import ContactsPage from '@/pages/ContactsPage';
+import AboutPage from '@/pages/AboutPage';
+import NewsPage from '@/pages/NewsPage';
+import DocumentsPage from '@/pages/DocumentsPage';
 
-type Section = 'home' | 'cabinet' | 'grants' | 'dashboard' | 'reports' | 'verification' | 'admin' | 'help' | 'contacts';
+type Section =
+  | 'home' | 'about' | 'news' | 'documents'
+  | 'cabinet' | 'grants' | 'dashboard' | 'reports'
+  | 'verification' | 'admin' | 'help' | 'contacts';
 type Role = 'producer' | 'officer' | 'admin';
 
 const navItems: { id: Section; label: string; icon: string; roles?: Role[] }[] = [
-  { id: 'home', label: 'Главная', icon: 'Home' },
-  { id: 'cabinet', label: 'Личный кабинет', icon: 'User' },
-  { id: 'grants', label: 'Заявки на гранты', icon: 'FilePlus' },
-  { id: 'reports', label: 'Отчётность', icon: 'FileCheck' },
-  { id: 'dashboard', label: 'Аналитика', icon: 'BarChart2' },
-  { id: 'verification', label: 'Проверка отчётов', icon: 'ShieldCheck', roles: ['officer', 'admin'] },
-  { id: 'admin', label: 'Администрирование', icon: 'Settings', roles: ['admin'] },
-  { id: 'help', label: 'Помощь', icon: 'HelpCircle' },
-  { id: 'contacts', label: 'Контакты', icon: 'Phone' },
+  { id: 'home',         label: 'Главная',           icon: 'Home'       },
+  { id: 'about',        label: 'О министерстве',    icon: 'Building2'  },
+  { id: 'news',         label: 'Новости',           icon: 'Newspaper'  },
+  { id: 'documents',    label: 'Документы',         icon: 'FolderOpen' },
+  { id: 'grants',       label: 'Заявки и гранты',   icon: 'FilePlus'   },
+  { id: 'reports',      label: 'Отчётность',        icon: 'FileCheck'  },
+  { id: 'dashboard',    label: 'Аналитика',         icon: 'BarChart2'  },
+  { id: 'cabinet',      label: 'Личный кабинет',    icon: 'User'       },
+  { id: 'verification', label: 'Проверка отчётов',  icon: 'ShieldCheck', roles: ['officer', 'admin'] },
+  { id: 'admin',        label: 'Администрирование', icon: 'Settings',    roles: ['admin'] },
+  { id: 'help',         label: 'Помощь',            icon: 'HelpCircle' },
+  { id: 'contacts',     label: 'Контакты',          icon: 'Phone'      },
 ];
 
 export default function App() {
@@ -154,24 +163,52 @@ export default function App() {
             </div>
 
             <div className="flex-1">
-              {section === 'home' && <HomePage onNavigate={navigate} />}
-              {section === 'cabinet' && <CabinetPage onNavigate={navigate} role={role} onRoleChange={setRole} />}
-              {section === 'grants' && <GrantsPage onNavigate={navigate} />}
-              {section === 'dashboard' && <DashboardPage />}
-              {section === 'reports' && <ReportsPage />}
+              {section === 'home'         && <HomePage        onNavigate={navigate} />}
+              {section === 'about'        && <AboutPage />}
+              {section === 'news'         && <NewsPage />}
+              {section === 'documents'    && <DocumentsPage />}
+              {section === 'cabinet'      && <CabinetPage     onNavigate={navigate} role={role} onRoleChange={setRole} />}
+              {section === 'grants'       && <GrantsPage      onNavigate={navigate} />}
+              {section === 'dashboard'    && <DashboardPage />}
+              {section === 'reports'      && <ReportsPage />}
               {section === 'verification' && <VerificationPage />}
-              {section === 'admin' && <AdminPage />}
-              {section === 'help' && <HelpPage />}
-              {section === 'contacts' && <ContactsPage />}
+              {section === 'admin'        && <AdminPage />}
+              {section === 'help'         && <HelpPage />}
+              {section === 'contacts'     && <ContactsPage />}
             </div>
 
             {/* Footer */}
-            <footer className="bg-gov-navy text-white/50 text-xs px-6 py-3 flex flex-col sm:flex-row items-center justify-between gap-2 shrink-0">
-              <span>© 2026 АСУГ СХ СО · Министерство сельского хозяйства и продовольствия Самарской области</span>
-              <div className="flex items-center gap-4">
-                <button onClick={() => navigate('help')} className="hover:text-white transition-colors">Документация</button>
-                <button onClick={() => navigate('contacts')} className="hover:text-white transition-colors">Обратная связь</button>
-                <span className="text-white/30">Сертификат ФСТЭК №12/2024</span>
+            <footer className="bg-gov-navy text-white shrink-0">
+              <div className="px-6 py-5 grid grid-cols-1 md:grid-cols-3 gap-6 border-b border-white/10">
+                <div>
+                  <div className="text-sm font-bold mb-2">АСУГ СХ СО</div>
+                  <div className="text-xs text-white/50 leading-relaxed">
+                    Автоматизированная система учёта и контроля расходования грантов в сельском хозяйстве Самарской области
+                  </div>
+                </div>
+                <div>
+                  <div className="text-xs font-semibold text-white/60 uppercase tracking-wide mb-2">Разделы</div>
+                  <div className="space-y-1.5">
+                    {(['about', 'news', 'documents', 'grants', 'help'] as Section[]).map((s) => (
+                      <button key={s} onClick={() => navigate(s)} className="block text-xs text-white/60 hover:text-white transition-colors">
+                        {navItems.find(n => n.id === s)?.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <div className="text-xs font-semibold text-white/60 uppercase tracking-wide mb-2">Контакты</div>
+                  <div className="text-xs text-white/60 space-y-1.5">
+                    <div>443006, Самара, ул. Молодогвардейская, 210</div>
+                    <a href="tel:88463321004" className="block hover:text-white transition-colors">8 (846) 332-10-04</a>
+                    <a href="mailto:mcx@samregion.ru" className="block hover:text-white transition-colors">mcx@samregion.ru</a>
+                    <a href="https://mcx.samregion.ru" target="_blank" rel="noopener noreferrer" className="block hover:text-white transition-colors">mcx.samregion.ru</a>
+                  </div>
+                </div>
+              </div>
+              <div className="px-6 py-3 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-white/40">
+                <span>© 2026 Министерство сельского хозяйства и продовольствия Самарской области</span>
+                <span>Сертификат ФСТЭК №12/2024</span>
               </div>
             </footer>
           </main>
