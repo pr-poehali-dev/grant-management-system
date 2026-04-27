@@ -132,8 +132,7 @@ export default function HomePage({ onNavigate }: HomePageProps) {
           </div>
 
           <h1 className="text-2xl lg:text-3xl font-bold leading-snug mb-3 max-w-3xl">
-            Автоматизированная система учёта и контроля<br className="hidden sm:block" />
-            расходования грантов в сельском хозяйстве
+            АГРОГРАНТ — поддержка АПК Самарской области
           </h1>
 
           <p className="text-white/65 text-base mb-6 max-w-2xl">
