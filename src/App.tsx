@@ -182,7 +182,7 @@ export default function App() {
             <footer className="bg-gov-navy text-white shrink-0">
               <div className="px-6 py-5 grid grid-cols-1 md:grid-cols-3 gap-6 border-b border-white/10">
                 <div>
-                  <div className="text-sm font-bold mb-2">АСУГ СХ СО</div>
+                  <div className="text-sm font-bold mb-2">АГРОГРАНТ</div>
                   <div className="text-xs text-white/50 leading-relaxed">
                     Автоматизированная система учёта и контроля расходования грантов в сельском хозяйстве Самарской области
                   </div>
@@ -207,6 +207,24 @@ export default function App() {
                   </div>
                 </div>
               </div>
+
+              {/* Блок интеллектуальной собственности */}
+              <div className="px-6 py-4 border-b border-white/10 bg-white/5">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
+                  <div className="flex items-center gap-2">
+                    <div className="w-7 h-7 rounded bg-white/10 flex items-center justify-center shrink-0">
+                      <Icon name="Cpu" size={14} className="text-white/80" />
+                    </div>
+                    <div className="text-xs text-white/70">
+                      Интеллектуальный продукт компании <span className="font-semibold text-white">ООО «МАТ-Лабс»</span>
+                    </div>
+                  </div>
+                  <div className="text-xs text-white/40 sm:ml-auto">
+                    Все права на программное обеспечение защищены
+                  </div>
+                </div>
+              </div>
+
               <div className="px-6 py-3 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-white/40">
                 <span>© 2026 Министерство сельского хозяйства и продовольствия Самарской области</span>
                 <span>Сертификат ФСТЭК №12/2024</span>
