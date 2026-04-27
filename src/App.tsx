@@ -60,8 +60,16 @@ export default function App() {
     <TooltipProvider>
       <Toaster />
       <div className="min-h-screen bg-background flex flex-col">
+
+        {/* Триколор РФ */}
+        <div className="flex w-full shrink-0" style={{ height: 6 }}>
+          <div className="flex-1 bg-white" />
+          <div className="flex-1" style={{ backgroundColor: '#003791' }} />
+          <div className="flex-1" style={{ backgroundColor: '#D52B1E' }} />
+        </div>
+
         {/* Top bar */}
-        <header className="bg-gov-navy border-b border-white/10 px-4 py-2.5 flex items-center justify-between z-30 relative shrink-0">
+        <header className="bg-gov-navy border-b border-white/10 px-4 py-2 flex items-center justify-between z-30 relative shrink-0">
           <div className="flex items-center gap-3">
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -69,38 +77,48 @@ export default function App() {
             >
               <Icon name="Menu" size={20} />
             </button>
-            <button onClick={() => navigate('home')} className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded bg-amber-500 flex items-center justify-center">
-                <Icon name="Wheat" size={16} className="text-white" />
-              </div>
+
+            {/* Логотип с гербом */}
+            <button onClick={() => navigate('home')} className="flex items-center gap-3">
+              {/* Цифровой герб РФ (SVG) */}
+              <svg viewBox="0 0 40 48" width="32" height="38" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Герб Российской Федерации">
+                <path d="M20 2C20 2 4 8 4 22C4 34 20 46 20 46C20 46 36 34 36 22C36 8 20 2 20 2Z" fill="#D52B1E"/>
+                {/* Орёл — упрощённый силуэт */}
+                <path d="M20 8L17 13H13L16 16L15 21L20 18L25 21L24 16L27 13H23L20 8Z" fill="#FFD700"/>
+                <path d="M12 14C10 15 9 17 10 19C11 20 13 20 14 19" fill="#FFD700"/>
+                <path d="M28 14C30 15 31 17 30 19C29 20 27 20 26 19" fill="#FFD700"/>
+                <path d="M16 20C16 24 18 28 20 30C22 28 24 24 24 20" fill="#D52B1E"/>
+                <rect x="18" y="20" width="4" height="8" rx="1" fill="#FFD700"/>
+              </svg>
+
               <div className="leading-tight">
-                <div className="text-white font-black text-sm tracking-tight">АСУГ СХ СО</div>
-                <div className="text-white/50 text-xs hidden sm:block">Учёт и контроль грантов АПК · Самарская область</div>
+                <div className="text-white font-bold text-sm tracking-tight">АСУГ СХ СО</div>
+                <div className="text-white/55 text-xs hidden sm:block" style={{ fontSize: 11 }}>
+                  Минсельхозпрод Самарской области
+                </div>
               </div>
             </button>
           </div>
 
           <div className="flex items-center gap-3 relative">
-            <div className="hidden sm:flex items-center gap-2 bg-white/10 rounded px-3 py-1.5 text-xs text-white/80">
+            <div className="hidden sm:flex items-center gap-2 bg-white/10 rounded px-3 py-1.5 text-white/80" style={{ fontSize: 13 }}>
               <Icon name={role === 'producer' ? 'Tractor' : role === 'officer' ? 'Shield' : 'Settings'} size={13} />
               {roleLabels[role]}
             </div>
             <AccessibilityPanel />
             <button className="relative text-white/70 hover:text-white">
               <Icon name="Bell" size={18} />
-              <span className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 bg-amber-500 rounded-full text-[9px] font-bold text-white flex items-center justify-center">3</span>
+              <span className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 rounded-full text-[9px] font-bold text-white flex items-center justify-center" style={{ backgroundColor: '#D52B1E' }}>3</span>
             </button>
             <button
               onClick={() => navigate('cabinet')}
-              className="w-8 h-8 rounded-full bg-amber-500 flex items-center justify-center text-white text-xs font-bold"
+              className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold"
+              style={{ backgroundColor: '#003791' }}
             >
               ИВ
             </button>
           </div>
         </header>
-
-        {/* Gov gold stripe */}
-        <div className="bg-amber-500 h-0.5 w-full shrink-0" />
 
         <div className="flex flex-1 min-h-0 overflow-hidden">
           {/* Sidebar overlay mobile */}
