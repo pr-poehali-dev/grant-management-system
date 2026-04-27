@@ -1,15 +1,7 @@
 import { useState } from 'react';
 import Icon from '@/components/ui/icon';
 
-const applications = [
-  { id: 'АС-2026-0021', type: 'Агростартап', applicant: 'КФХ "Солнечное"', amount: '₽ 5 800 000', date: '22 апр 2026', status: 'review' },
-  { id: 'СФ-2026-0008', type: 'Семейная ферма', applicant: 'ИП Смирнов К.А.', amount: '₽ 18 000 000', date: '19 апр 2026', status: 'new' },
-  { id: 'АС-2026-0019', type: 'Агростартап', applicant: 'КФХ "Заречное"', amount: '₽ 3 200 000', date: '15 апр 2026', status: 'approved' },
-  { id: 'СПСК-2026-0005', type: 'Грант СПСК', applicant: 'СПСК "Волга-Агро"', amount: '₽ 48 000 000', date: '10 апр 2026', status: 'review' },
-  { id: 'СУБ-2026-0041', type: 'Несвязанная поддержка', applicant: 'ООО "АгроСамара"', amount: '₽ 2 140 000', date: '05 апр 2026', status: 'approved' },
-  { id: 'СФ-2025-0031', type: 'Семейная ферма', applicant: 'ИП Козлова Н.Р.', amount: '₽ 9 700 000', date: '28 мар 2026', status: 'completed' },
-  { id: 'КАП-2025-0012', type: 'Компенсация CAPEX', applicant: 'ООО "Тепличный"', amount: '₽ 15 200 000', date: '20 мар 2026', status: 'rejected' },
-];
+const applications: { id: string; type: string; applicant: string; amount: string; date: string; status: string }[] = [];
 
 const statusLabel: Record<string, string> = {
   approved: 'Одобрена',

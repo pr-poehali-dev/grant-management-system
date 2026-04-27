@@ -1,12 +1,7 @@
 import { useState } from 'react';
 import Icon from '@/components/ui/icon';
 
-const reports = [
-  { id: 'ОТЧ-2026-0341', grant: 'АС-2024-0891', period: 'I кв. 2026', type: 'Промежуточный', submitted: '14 апр 2026', status: 'approved', reviewer: 'Петрова М.С.' },
-  { id: 'ОТЧ-2026-0298', grant: 'СФ-2025-0112', period: 'IV кв. 2025', type: 'Промежуточный', submitted: '12 янв 2026', status: 'review', reviewer: '—' },
-  { id: 'ОТЧ-2025-0891', grant: 'АС-2023-0456', period: 'III кв. 2025', type: 'Итоговый', submitted: '08 окт 2025', status: 'completed', reviewer: 'Соколов А.В.' },
-  { id: 'ОТЧ-2025-0712', grant: 'МТБ-2025-0012', period: 'II кв. 2025', type: 'Промежуточный', submitted: '10 июл 2025', status: 'rejected', reviewer: 'Иванова Е.П.' },
-];
+const reports: { id: string; grant: string; period: string; type: string; submitted: string; status: string; reviewer: string }[] = [];
 
 const statusLabel: Record<string, string> = {
   approved: 'Принят',
@@ -43,12 +38,14 @@ export default function ReportsPage() {
         </button>
       </div>
 
-      {/* Alert */}
-      <div className="bg-amber-50 border border-amber-300 rounded p-4 mb-5 flex items-start gap-3">
-        <Icon name="AlertTriangle" size={16} className="text-amber-600 mt-0.5 shrink-0" />
+      {/* Информационный блок */}
+      <div className="bg-blue-50 border border-blue-200 rounded p-4 mb-5 flex items-start gap-3">
+        <Icon name="Info" size={16} className="text-blue-600 mt-0.5 shrink-0" />
         <div>
-          <div className="text-sm font-semibold text-amber-800">Приближается срок сдачи отчёта</div>
-          <div className="text-xs text-amber-700 mt-0.5">По гранту <span className="font-mono font-semibold">АС-2024-0891</span> необходимо сдать промежуточный отчёт за II кв. 2026 до <strong>15 мая 2026</strong></div>
+          <div className="text-sm font-semibold text-blue-900">Сроки сдачи отчётности по вашим грантам</div>
+          <div className="text-xs text-blue-800 mt-0.5">
+            Информация о сроках появится автоматически после получения гранта. Каждое соглашение содержит индивидуальный график сдачи отчётов.
+          </div>
         </div>
       </div>
 
@@ -67,6 +64,15 @@ export default function ReportsPage() {
             </tr>
           </thead>
           <tbody className="divide-y divide-gov-line">
+            {reports.length === 0 && (
+              <tr>
+                <td colSpan={7} className="px-4 py-10 text-center">
+                  <Icon name="FileText" size={28} className="mx-auto text-muted-foreground/40 mb-2" />
+                  <div className="text-sm text-muted-foreground mb-1">У вас пока нет сданных отчётов</div>
+                  <div className="text-xs text-muted-foreground">Сданные отчёты по вашим грантам появятся в этом списке</div>
+                </td>
+              </tr>
+            )}
             {reports.map((r, i) => (
               <tr key={r.id} className="hover:bg-secondary/50 transition-colors animate-slide-up cursor-pointer" style={{ animationDelay: `${i * 0.05}s` }}>
                 <td className="px-4 py-3 font-mono text-xs text-gov-navy font-semibold">{r.id}</td>

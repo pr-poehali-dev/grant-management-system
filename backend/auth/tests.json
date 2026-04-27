@@ -1,0 +1,25 @@
+{
+  "tests": [
+    { "name": "OPTIONS", "method": "OPTIONS", "path": "/", "expectedStatus": 200 },
+    {
+      "name": "Register requires email",
+      "method": "POST",
+      "path": "/?action=register",
+      "body": {},
+      "expectedStatus": 400
+    },
+    {
+      "name": "Login requires email",
+      "method": "POST",
+      "path": "/?action=login",
+      "body": {},
+      "expectedStatus": 400
+    },
+    {
+      "name": "ME without token returns 401",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 401
+    }
+  ]
+}

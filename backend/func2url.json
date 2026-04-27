@@ -1,4 +1,6 @@
 {
+  "auth": "https://functions.poehali.dev/f25bf775-a0f9-4d9c-8dea-ba003ffeed1b",
+  "ai-assistant": "https://functions.poehali.dev/b3b5476d-e7a7-4695-a679-c389b5664d11",
   "analytics": "https://functions.poehali.dev/4463947b-5c46-4600-a3ef-a7916a7aa771",
   "dictionaries": "https://functions.poehali.dev/1e3274cd-661e-4b3a-a018-21550182a9cb",
   "reports": "https://functions.poehali.dev/c01991df-d80f-4791-9733-5b2f58fb5b48",

@@ -3,6 +3,10 @@ import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import Icon from '@/components/ui/icon';
 import AccessibilityPanel from '@/components/AccessibilityPanel';
+import AuthModal from '@/components/AuthModal';
+import AuthGate from '@/components/AuthGate';
+import AiAssistant from '@/components/AiAssistant';
+import { useAuth } from '@/lib/auth';
 import HomePage from '@/pages/HomePage';
 import CabinetPage from '@/pages/CabinetPage';
 import GrantsPage from '@/pages/GrantsPage';
@@ -39,11 +43,30 @@ const navItems: { id: Section; label: string; icon: string; roles?: Role[] }[] =
 
 const API_REPORTS = 'https://functions.poehali.dev/c01991df-d80f-4791-9733-5b2f58fb5b48';
 
+// Разделы, доступные ТОЛЬКО зарегистрированным пользователям
+const PROTECTED_SECTIONS: Section[] = ['cabinet', 'grants', 'reports', 'verification', 'admin'];
+
+const SECTION_DESCRIPTIONS: Partial<Record<Section, string>> = {
+  cabinet:      'В личном кабинете доступны ваши гранты, заявки и сданные отчёты.',
+  grants:       'Подача заявок на государственные гранты доступна после регистрации.',
+  reports:      'Сдача отчётности по грантам доступна только зарегистрированным сельхозтоваропроизводителям.',
+  verification: 'Проверка отчётности доступна сотрудникам Министерства сельского хозяйства.',
+  admin:        'Администрирование системы доступно только администраторам АГРОГРАНТ.',
+};
+
 export default function App() {
+  const auth = useAuth();
   const [section, setSection] = useState<Section>('home');
   const [role, setRole] = useState<Role>('producer');
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [notifCount, setNotifCount] = useState(0);
+  const [authOpen, setAuthOpen] = useState(false);
+  const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
+
+  // Подтягиваем роль пользователя в локальный state
+  useEffect(() => {
+    if (auth.user) setRole(auth.user.role);
+  }, [auth.user]);
 
   // Реальный счётчик: количество новых отчётов на проверке (из БД)
   useEffect(() => {
@@ -64,6 +87,11 @@ export default function App() {
     setSection(s as Section);
     setSidebarOpen(false);
     window.scrollTo(0, 0);
+  };
+
+  const openAuth = (mode: 'login' | 'register') => {
+    setAuthMode(mode);
+    setAuthOpen(true);
   };
 
   const roleLabels: Record<Role, string> = {
@@ -107,10 +135,31 @@ export default function App() {
           </div>
 
           <div className="flex items-center gap-3 relative">
-            <div className="hidden sm:flex items-center gap-2 bg-white/10 rounded px-3 py-1.5 text-white/80" style={{ fontSize: 13 }}>
-              <Icon name={role === 'producer' ? 'Tractor' : role === 'officer' ? 'Shield' : 'Settings'} size={13} />
-              {roleLabels[role]}
-            </div>
+            {auth.user ? (
+              <div className="hidden sm:flex items-center gap-2">
+                <div className="flex items-center gap-2 bg-white/10 rounded px-3 py-1.5 text-white/90" style={{ fontSize: 13 }}>
+                  <Icon name={role === 'producer' ? 'Tractor' : role === 'officer' ? 'Shield' : 'Settings'} size={13} />
+                  <span className="max-w-[160px] truncate">{auth.user.full_name}</span>
+                </div>
+                <button onClick={auth.logout} title="Выйти"
+                  className="text-white/70 hover:text-white p-1.5 hover:bg-white/10 rounded transition-colors">
+                  <Icon name="LogOut" size={15} />
+                </button>
+              </div>
+            ) : (
+              <div className="flex items-center gap-1.5">
+                <button onClick={() => openAuth('login')}
+                  className="text-white/90 hover:text-white text-xs font-semibold px-3 py-1.5 hover:bg-white/10 rounded transition-colors flex items-center gap-1.5">
+                  <Icon name="LogIn" size={13} />
+                  <span className="hidden sm:inline">Войти</span>
+                </button>
+                <button onClick={() => openAuth('register')}
+                  className="bg-white text-gov-navy text-xs font-semibold px-3 py-1.5 rounded hover:bg-white/90 transition-colors hidden sm:flex items-center gap-1.5">
+                  <Icon name="UserPlus" size={13} />
+                  Регистрация
+                </button>
+              </div>
+            )}
             <AccessibilityPanel />
             <button
               onClick={() => navigate('verification')}
@@ -191,18 +240,36 @@ export default function App() {
             </div>
 
             <div className="flex-1">
-              {section === 'home'         && <HomePage        onNavigate={navigate} />}
-              {section === 'about'        && <AboutPage />}
-              {section === 'news'         && <NewsPage />}
-              {section === 'documents'    && <DocumentsPage />}
-              {section === 'cabinet'      && <CabinetPage     onNavigate={navigate} role={role} onRoleChange={setRole} />}
-              {section === 'grants'       && <GrantsPage      onNavigate={navigate} />}
-              {section === 'dashboard'    && <DashboardPage />}
-              {section === 'reports'      && <ReportsPage />}
-              {section === 'verification' && <VerificationPage />}
-              {section === 'admin'        && <AdminPage />}
-              {section === 'help'         && <HelpPage />}
-              {section === 'contacts'     && <ContactsPage />}
+              {(() => {
+                const isProtected = PROTECTED_SECTIONS.includes(section);
+                if (isProtected && !auth.user) {
+                  const label = navItems.find((n) => n.id === section)?.label || section;
+                  return (
+                    <AuthGate
+                      sectionLabel={label}
+                      description={SECTION_DESCRIPTIONS[section]}
+                      onLogin={() => openAuth('login')}
+                      onRegister={() => openAuth('register')}
+                    />
+                  );
+                }
+                return (
+                  <>
+                    {section === 'home'         && <HomePage        onNavigate={navigate} />}
+                    {section === 'about'        && <AboutPage />}
+                    {section === 'news'         && <NewsPage />}
+                    {section === 'documents'    && <DocumentsPage />}
+                    {section === 'cabinet'      && <CabinetPage     onNavigate={navigate} role={role} onRoleChange={setRole} />}
+                    {section === 'grants'       && <GrantsPage      onNavigate={navigate} />}
+                    {section === 'dashboard'    && <DashboardPage />}
+                    {section === 'reports'      && <ReportsPage />}
+                    {section === 'verification' && <VerificationPage />}
+                    {section === 'admin'        && <AdminPage />}
+                    {section === 'help'         && <HelpPage />}
+                    {section === 'contacts'     && <ContactsPage />}
+                  </>
+                );
+              })()}
             </div>
 
             {/* Footer */}
@@ -259,6 +326,12 @@ export default function App() {
             </footer>
           </main>
         </div>
+
+        {/* ИИ-агент-менеджер — доступен на всех страницах */}
+        <AiAssistant currentPage={navItems.find((n) => n.id === section)?.label} />
+
+        {/* Модалка регистрации/входа */}
+        <AuthModal open={authOpen} onClose={() => setAuthOpen(false)} initialMode={authMode} />
       </div>
     </TooltipProvider>
   );
