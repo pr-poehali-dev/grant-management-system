@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import Icon from '@/components/ui/icon';
+import AccessibilityPanel from '@/components/AccessibilityPanel';
 import HomePage from '@/pages/HomePage';
 import CabinetPage from '@/pages/CabinetPage';
 import GrantsPage from '@/pages/GrantsPage';
@@ -70,11 +71,12 @@ export default function App() {
             </button>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 relative">
             <div className="hidden sm:flex items-center gap-2 bg-white/10 rounded px-3 py-1.5 text-xs text-white/80">
               <Icon name={role === 'producer' ? 'Tractor' : role === 'officer' ? 'Shield' : 'Settings'} size={13} />
               {roleLabels[role]}
             </div>
+            <AccessibilityPanel />
             <button className="relative text-white/70 hover:text-white">
               <Icon name="Bell" size={18} />
               <span className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 bg-amber-500 rounded-full text-[9px] font-bold text-white flex items-center justify-center">3</span>

@@ -5,22 +5,22 @@
 @layer base {
   :root {
     --background: 216 33% 97%;
-    --foreground: 220 40% 10%;
+    --foreground: 220 40% 8%;
 
     --card: 0 0% 100%;
-    --card-foreground: 220 40% 10%;
+    --card-foreground: 220 40% 8%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 220 40% 10%;
+    --popover-foreground: 220 40% 8%;
 
     --primary: 220 65% 22%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 210 30% 92%;
-    --secondary-foreground: 220 40% 18%;
+    --secondary-foreground: 220 40% 14%;
 
     --muted: 214 25% 93%;
-    --muted-foreground: 215 20% 48%;
+    --muted-foreground: 215 25% 36%;
 
     --accent: 35 85% 48%;
     --accent-foreground: 0 0% 100%;
@@ -28,18 +28,18 @@
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 214 22% 86%;
-    --input: 214 22% 86%;
+    --border: 214 22% 82%;
+    --input: 214 22% 82%;
     --ring: 220 65% 22%;
 
     --radius: 0.375rem;
 
     --sidebar-background: 220 50% 16%;
-    --sidebar-foreground: 210 30% 88%;
+    --sidebar-foreground: 210 40% 92%;
     --sidebar-primary: 0 0% 100%;
     --sidebar-primary-foreground: 220 50% 16%;
     --sidebar-accent: 220 45% 22%;
-    --sidebar-accent-foreground: 210 30% 92%;
+    --sidebar-accent-foreground: 210 40% 96%;
     --sidebar-border: 220 40% 24%;
     --sidebar-ring: 35 85% 48%;
 
@@ -47,14 +47,84 @@
     --gov-navy-light: 220 45% 28%;
     --gov-gold: 35 85% 48%;
     --gov-gold-light: 40 90% 62%;
-    --gov-green: 142 55% 35%;
-    --gov-green-light: 142 45% 44%;
-    --gov-red: 4 72% 51%;
+    --gov-green: 142 55% 28%;
+    --gov-green-light: 142 45% 38%;
+    --gov-red: 4 72% 45%;
     --gov-surface: 216 33% 97%;
-    --gov-line: 214 22% 86%;
+    --gov-line: 214 22% 82%;
   }
 }
 
+/* ===== РЕЖИМ ДЛЯ СЛАБОВИДЯЩИХ ===== */
+body.accessible {
+  --background: 0 0% 0%;
+  --foreground: 60 100% 100%;
+
+  --card: 0 0% 8%;
+  --card-foreground: 60 100% 100%;
+
+  --popover: 0 0% 8%;
+  --popover-foreground: 60 100% 100%;
+
+  --primary: 60 100% 60%;
+  --primary-foreground: 0 0% 0%;
+
+  --secondary: 0 0% 15%;
+  --secondary-foreground: 60 100% 100%;
+
+  --muted: 0 0% 15%;
+  --muted-foreground: 60 80% 90%;
+
+  --accent: 40 100% 55%;
+  --accent-foreground: 0 0% 0%;
+
+  --destructive: 0 100% 60%;
+  --destructive-foreground: 0 0% 0%;
+
+  --border: 0 0% 35%;
+  --input: 0 0% 25%;
+  --ring: 60 100% 60%;
+
+  --sidebar-background: 0 0% 5%;
+  --sidebar-foreground: 60 100% 100%;
+  --sidebar-primary: 60 100% 60%;
+  --sidebar-primary-foreground: 0 0% 0%;
+  --sidebar-accent: 0 0% 15%;
+  --sidebar-accent-foreground: 60 100% 100%;
+  --sidebar-border: 0 0% 25%;
+
+  --gov-navy: 0 0% 5%;
+  --gov-navy-light: 0 0% 15%;
+  --gov-gold: 40 100% 55%;
+  --gov-green: 120 100% 45%;
+  --gov-red: 0 100% 60%;
+  --gov-line: 0 0% 35%;
+}
+
+body.accessible-large {
+  font-size: 120%;
+}
+
+body.accessible-large h1 {
+  font-size: 2.5rem !important;
+}
+body.accessible-large h2 {
+  font-size: 1.5rem !important;
+}
+body.accessible-large h3 {
+  font-size: 1.2rem !important;
+}
+body.accessible-large .text-xs {
+  font-size: 0.85rem !important;
+}
+body.accessible-large .text-sm {
+  font-size: 1rem !important;
+}
+body.accessible-large .text-base {
+  font-size: 1.1rem !important;
+}
+
+/* ===== BASE ===== */
 @layer base {
   * {
     @apply border-border;
@@ -80,6 +150,7 @@
   }
 }
 
+/* ===== UTILITIES ===== */
 @layer utilities {
   .bg-gov-navy {
     background-color: hsl(var(--gov-navy));
@@ -115,7 +186,6 @@
   .animate-fade-in {
     animation: fadeIn 0.4s ease-out both;
   }
-
   .animate-slide-up {
     animation: slideUp 0.35s ease-out both;
   }
@@ -142,7 +212,8 @@
 
   .sidebar-item-active {
     background-color: hsl(var(--gov-gold));
-    color: #fff;
+    color: #000;
+    font-weight: 700;
   }
 
   .sidebar-item {
@@ -179,23 +250,45 @@
   }
 
   .badge-status-new {
-    background-color: #e8f0fe;
-    color: #1a56db;
+    background-color: #dbeafe;
+    color: #1e3a8a;
   }
   .badge-status-review {
     background-color: #fef3c7;
-    color: #92400e;
+    color: #78350f;
   }
   .badge-status-approved {
-    background-color: #d1fae5;
-    color: #065f46;
+    background-color: #dcfce7;
+    color: #14532d;
   }
   .badge-status-rejected {
     background-color: #fee2e2;
-    color: #991b1b;
+    color: #7f1d1d;
   }
   .badge-status-completed {
     background-color: #ede9fe;
-    color: #5b21b6;
+    color: #3b0764;
+  }
+
+  /* accessible overrides для badge */
+  body.accessible .badge-status-new {
+    background-color: #1e3a8a;
+    color: #fff;
+  }
+  body.accessible .badge-status-review {
+    background-color: #78350f;
+    color: #fff;
+  }
+  body.accessible .badge-status-approved {
+    background-color: #14532d;
+    color: #fff;
+  }
+  body.accessible .badge-status-rejected {
+    background-color: #7f1d1d;
+    color: #fff;
+  }
+  body.accessible .badge-status-completed {
+    background-color: #3b0764;
+    color: #fff;
   }
 }
