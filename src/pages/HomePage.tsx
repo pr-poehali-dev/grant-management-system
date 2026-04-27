@@ -1,18 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Icon from '@/components/ui/icon';
+
+const API_REPORTS = 'https://functions.poehali.dev/c01991df-d80f-4791-9733-5b2f58fb5b48';
 
 interface HomePageProps {
   onNavigate: (section: string) => void;
 }
-
-/* ── Данные ──────────────────────────────────────────────── */
-
-const stats = [
-  { label: 'Объём господдержки АПК 2026', value: '₽ 3,8 млрд', icon: 'Landmark' },
-  { label: 'Получателей поддержки',        value: '2 340',       icon: 'Users'    },
-  { label: 'Заявок на рассмотрении',       value: '187',         icon: 'FileText' },
-  { label: 'Мер господдержки в 2026',      value: '42',          icon: 'Award'    },
-];
 
 // Услуги и сервисы — нейтральный гос-стиль (белый/серый, акценты — синий/красный)
 const services = [
@@ -107,8 +100,21 @@ const BLUE = '#003791';
 
 /* ── Компонент ───────────────────────────────────────────── */
 
+interface RealStats {
+  total: number; new: number; in_review: number;
+  approved: number; rejected: number; returned: number;
+}
+
 export default function HomePage({ onNavigate }: HomePageProps) {
   const [search, setSearch] = useState('');
+  const [stats, setStats] = useState<RealStats | null>(null);
+
+  useEffect(() => {
+    fetch(API_REPORTS)
+      .then((r) => r.json())
+      .then((d) => setStats(d.stats))
+      .catch(() => { /* silent */ });
+  }, []);
 
   const onSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -178,10 +184,15 @@ export default function HomePage({ onNavigate }: HomePageProps) {
         </div>
       </section>
 
-      {/* ══ Статистика ════════════════════════════════════ */}
+      {/* ══ Реальная статистика из БД ═════════════════════ */}
       <section className="bg-white border-b border-gov-line">
         <div className="max-w-5xl mx-auto px-6 lg:px-12 py-5 grid grid-cols-2 lg:grid-cols-4 gap-4">
-          {stats.map((s) => (
+          {[
+            { label: 'Всего отчётов в системе',  value: stats?.total ?? 0,    icon: 'FileText' },
+            { label: 'Новых на проверку',         value: stats?.new ?? 0,      icon: 'Inbox' },
+            { label: 'Одобренных отчётов',        value: stats?.approved ?? 0, icon: 'CheckCircle' },
+            { label: 'Возвращено / отклонено',    value: (stats?.returned ?? 0) + (stats?.rejected ?? 0), icon: 'AlertCircle' },
+          ].map((s) => (
             <div key={s.label} className="stat-card pl-4 py-2">
               <div className="flex items-start justify-between gap-2">
                 <div>

@@ -31,8 +31,8 @@ const navItems: { id: Section; label: string; icon: string; roles?: Role[] }[] =
   { id: 'reports',      label: 'Отчётность',        icon: 'FileCheck'  },
   { id: 'dashboard',    label: 'Аналитика',         icon: 'BarChart2'  },
   { id: 'cabinet',      label: 'Личный кабинет',    icon: 'User'       },
-  { id: 'verification', label: 'Проверка отчётов',  icon: 'ShieldCheck', roles: ['officer', 'admin'] },
-  { id: 'admin',        label: 'Администрирование', icon: 'Settings',    roles: ['admin'] },
+  { id: 'verification', label: 'Проверка отчётов',  icon: 'ShieldCheck' },
+  { id: 'admin',        label: 'Администрирование', icon: 'Settings'    },
   { id: 'help',         label: 'Помощь',            icon: 'HelpCircle' },
   { id: 'contacts',     label: 'Контакты',          icon: 'Phone'      },
 ];

@@ -1,193 +1,241 @@
+import { useState, useEffect } from 'react';
 import Icon from '@/components/ui/icon';
 
-const monthlyData = [
-  { month: 'Янв', amount: 280, count: 12 },
-  { month: 'Фев', amount: 420, count: 18 },
-  { month: 'Мар', amount: 350, count: 15 },
-  { month: 'Апр', amount: 610, count: 24 },
-  { month: 'Май', amount: 540, count: 21 },
-  { month: 'Июн', amount: 720, count: 28 },
-  { month: 'Июл', amount: 680, count: 26 },
-  { month: 'Авг', amount: 890, count: 34 },
-  { month: 'Сен', amount: 760, count: 29 },
-  { month: 'Окт', amount: 950, count: 38 },
-  { month: 'Ноя', amount: 820, count: 32 },
-  { month: 'Дек', amount: 1050, count: 42 },
-];
+const API_ANALYTICS = 'https://functions.poehali.dev/4463947b-5c46-4600-a3ef-a7916a7aa771';
 
-const maxAmount = Math.max(...monthlyData.map((d) => d.amount));
+interface KPI {
+  total_amount: number; total_used: number; remainder: number;
+  used_pct: number; grants_count: number; producers_count: number;
+}
 
-const byType = [
-  { name: 'Агростартап', value: 42, color: '#1e3a8a', amount: '₽ 1,8 млрд' },
-  { name: 'Семейная ферма', value: 35, color: '#15803d', amount: '₽ 1,5 млрд' },
-  { name: 'Развитие МТБ', value: 23, color: '#b45309', amount: '₽ 0,9 млрд' },
-];
+interface DistrictRow {
+  name: string; type: string; grants_count: number;
+  producers_count: number; total_amount: number;
+}
 
-const topRegions = [
-  { name: 'Краснодарский край', amount: '₽ 480 млн', count: 94, progress: 92 },
-  { name: 'Ставропольский край', amount: '₽ 340 млн', count: 67, progress: 65 },
-  { name: 'Ростовская область', amount: '₽ 290 млн', count: 58, progress: 56 },
-  { name: 'Республика Татарстан', amount: '₽ 240 млн', count: 47, progress: 46 },
-  { name: 'Воронежская область', amount: '₽ 195 млн', count: 39, progress: 38 },
-];
+interface GrantTypeRow {
+  name: string; code: string; grants_count: number;
+  total_amount: number; total_used: number;
+}
 
-const kpis = [
-  { label: 'Бюджет 2026, план', value: '₽ 8,5 млрд', icon: 'Target', color: 'text-blue-700' },
-  { label: 'Освоено', value: '₽ 4,2 млрд', sub: '49%', icon: 'TrendingUp', color: 'text-green-700' },
-  { label: 'Остаток', value: '₽ 4,3 млрд', icon: 'Wallet', color: 'text-amber-700' },
-  { label: 'Получателей', value: '1 847', sub: '+8% к 2025', icon: 'Users', color: 'text-purple-700' },
-];
+interface CategoryRow {
+  name: string; code: string; items_count: number;
+  quantity: string | number; total_price: number; avg_price: number;
+}
+
+interface AnalyticsData {
+  kpi: KPI;
+  by_status: Record<string, number>;
+  by_grant_type: GrantTypeRow[];
+  by_district: DistrictRow[];
+  by_category: CategoryRow[];
+  by_month: Array<{ month: string; reports_count: number; total_amount: number }>;
+  check_summary: Record<string, number>;
+}
+
+const formatRub = (n: number) => {
+  if (n >= 1_000_000_000) return `₽ ${(n / 1_000_000_000).toFixed(1)} млрд`;
+  if (n >= 1_000_000) return `₽ ${(n / 1_000_000).toFixed(1)} млн`;
+  if (n >= 1_000) return `₽ ${(n / 1_000).toFixed(0)} тыс.`;
+  return `₽ ${n.toLocaleString('ru-RU')}`;
+};
+
+const formatRubFull = (n: number) => `₽ ${n.toLocaleString('ru-RU')}`;
 
 export default function DashboardPage() {
+  const [data, setData] = useState<AnalyticsData | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch(API_ANALYTICS)
+      .then((r) => r.json())
+      .then(setData)
+      .catch(() => setData(null))
+      .finally(() => setLoading(false));
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="animate-fade-in max-w-6xl mx-auto px-8 py-12 text-center text-muted-foreground">
+        <Icon name="Loader2" size={28} className="animate-spin mx-auto mb-3 opacity-50" />
+        Загрузка аналитики...
+      </div>
+    );
+  }
+
+  if (!data) {
+    return (
+      <div className="animate-fade-in max-w-6xl mx-auto px-8 py-12 text-center text-muted-foreground">
+        <Icon name="AlertCircle" size={28} className="mx-auto mb-3 opacity-50" />
+        Не удалось загрузить данные
+      </div>
+    );
+  }
+
+  const { kpi, by_grant_type, by_district, by_category, check_summary } = data;
+  const maxDistrict = Math.max(1, ...by_district.map((d) => d.total_amount));
+  const maxCategory = Math.max(1, ...by_category.map((c) => c.total_price));
+
   return (
-    <div className="animate-fade-in max-w-5xl px-8 py-8">
-      <div className="flex items-center justify-between mb-6">
+    <div className="animate-fade-in max-w-6xl mx-auto px-6 lg:px-10 py-6">
+      <div className="flex items-center justify-between mb-5 flex-wrap gap-3">
         <div>
           <h1 className="text-xl font-bold text-gov-navy flex items-center gap-2">
             <Icon name="BarChart2" size={20} />
-            Дашборд расходования грантов
+            Аналитика расходования грантов
           </h1>
-          <p className="text-sm text-muted-foreground mt-0.5">Актуальные данные по состоянию на 27 апреля 2026</p>
-        </div>
-        <div className="flex gap-2">
-          <select className="text-xs border border-gov-line rounded px-3 py-1.5 bg-white focus:outline-none">
-            <option>2026 год</option>
-            <option>2025 год</option>
-            <option>2024 год</option>
-          </select>
-          <button className="text-xs bg-secondary text-gov-navy px-3 py-1.5 rounded border border-gov-line hover:bg-gov-navy hover:text-white transition-colors flex items-center gap-1.5">
-            <Icon name="Download" size={13} />
-            Экспорт
-          </button>
+          <p className="text-sm text-muted-foreground mt-0.5">
+            Реальные данные из системы — обновляются автоматически
+          </p>
         </div>
       </div>
 
-      {/* KPI Row */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
-        {kpis.map((k, i) => (
-          <div key={k.label} className="bg-white border border-gov-line rounded p-4 stat-card animate-slide-up" style={{ animationDelay: `${i * 0.07}s` }}>
+      {/* KPI */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-5">
+        {[
+          { label: 'Сумма выделенных грантов', value: formatRub(kpi.total_amount), icon: 'Target', color: 'text-blue-700' },
+          { label: 'Освоено',                  value: formatRub(kpi.total_used),   sub: `${kpi.used_pct}%`, icon: 'TrendingUp', color: 'text-green-700' },
+          { label: 'Остаток',                  value: formatRub(kpi.remainder),    icon: 'Wallet', color: 'text-amber-700' },
+          { label: 'Получателей',              value: kpi.producers_count.toString(), sub: `${kpi.grants_count} грантов`, icon: 'Users', color: 'text-purple-700' },
+        ].map((k) => (
+          <div key={k.label} className="bg-white border border-gov-line rounded p-4 stat-card">
             <div className="flex items-center justify-between mb-2">
               <span className="text-xs text-muted-foreground leading-snug">{k.label}</span>
               <Icon name={k.icon} size={16} className={k.color} />
             </div>
-            <div className="text-xl font-black text-gov-navy">{k.value}</div>
+            <div className="text-xl font-bold text-gov-navy">{k.value}</div>
             {k.sub && <div className="text-xs text-gov-green font-semibold mt-0.5">{k.sub}</div>}
           </div>
         ))}
       </div>
 
-      {/* Overall progress */}
+      {/* Прогресс */}
       <div className="bg-white border border-gov-line rounded p-5 mb-5">
-        <div className="flex justify-between items-center mb-2">
-          <span className="text-sm font-semibold text-gov-navy">Общее освоение бюджета 2026</span>
-          <span className="text-sm font-black text-gov-navy">49%</span>
+        <div className="flex items-center justify-between mb-2">
+          <h3 className="text-sm font-bold text-gov-navy">Освоение бюджета</h3>
+          <span className="text-sm font-bold text-gov-navy">{kpi.used_pct}%</span>
         </div>
-        <div className="progress-bar mb-1">
-          <div className="progress-fill" style={{ width: '49%' }} />
-        </div>
+        <div className="progress-bar mb-2"><div className="progress-fill" style={{ width: `${kpi.used_pct}%` }} /></div>
         <div className="flex justify-between text-xs text-muted-foreground">
-          <span>₽ 4,2 млрд освоено</span>
-          <span>₽ 8,5 млрд план</span>
+          <span>Освоено: {formatRubFull(kpi.total_used)}</span>
+          <span>План: {formatRubFull(kpi.total_amount)}</span>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-5">
-        {/* Bar chart */}
-        <div className="lg:col-span-2 bg-white border border-gov-line rounded p-5">
-          <h3 className="text-sm font-bold text-gov-navy mb-4 flex items-center gap-2">
-            <Icon name="BarChart" size={15} />
-            Ежемесячное расходование, млн ₽
+      {/* Автопроверки */}
+      {Object.keys(check_summary).length > 0 && (
+        <div className="bg-white border border-gov-line rounded p-5 mb-5">
+          <h3 className="text-sm font-bold text-gov-navy mb-3 flex items-center gap-2">
+            <Icon name="ShieldCheck" size={15} />
+            Результаты автопроверок отчётов
           </h3>
-          <div className="flex items-end gap-1.5 h-36">
-            {monthlyData.map((d, i) => (
-              <div key={d.month} className="flex-1 flex flex-col items-center gap-1 group">
-                <div
-                  className="w-full bg-gov-navy rounded-t transition-all hover:bg-amber-500 cursor-pointer"
-                  style={{ height: `${(d.amount / maxAmount) * 100}%`, animationDelay: `${i * 0.04}s` }}
-                  title={`${d.month}: ₽${d.amount} млн`}
-                />
-                <span className="text-xs text-muted-foreground">{d.month}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* By type */}
-        <div className="bg-white border border-gov-line rounded p-5">
-          <h3 className="text-sm font-bold text-gov-navy mb-4 flex items-center gap-2">
-            <Icon name="PieChart" size={15} />
-            По видам грантов
-          </h3>
-          <div className="space-y-4">
-            {byType.map((t) => (
-              <div key={t.name}>
-                <div className="flex justify-between text-xs mb-1">
-                  <span className="font-medium text-foreground">{t.name}</span>
-                  <span className="text-muted-foreground">{t.value}%</span>
-                </div>
-                <div className="progress-bar mb-1">
-                  <div className="h-full rounded-full transition-all" style={{ width: `${t.value}%`, background: t.color }} />
-                </div>
-                <div className="text-xs text-muted-foreground">{t.amount}</div>
-              </div>
-            ))}
-          </div>
-
-          {/* Pie visual */}
-          <div className="mt-4 flex justify-center">
-            <svg width="100" height="100" viewBox="0 0 36 36">
-              <circle cx="18" cy="18" r="15.9" fill="#f8fafc" />
-              {(() => {
-                let offset = 0;
-                const circumference = 99.9;
-                return byType.map((t) => {
-                  const dash = (t.value / 100) * circumference;
-                  const gap = circumference - dash;
-                  const el = (
-                    <circle
-                      key={t.name}
-                      cx="18" cy="18" r="15.9"
-                      fill="none"
-                      stroke={t.color}
-                      strokeWidth="3.5"
-                      strokeDasharray={`${dash} ${gap}`}
-                      strokeDashoffset={-offset}
-                      transform="rotate(-90 18 18)"
-                    />
-                  );
-                  offset += dash;
-                  return el;
-                });
-              })()}
-              <text x="18" y="20" textAnchor="middle" fontSize="5" fontWeight="bold" fill="#1e3a8a">100%</text>
-            </svg>
-          </div>
-        </div>
-      </div>
-
-      {/* Regions */}
-      <div className="bg-white border border-gov-line rounded p-5">
-        <h3 className="text-sm font-bold text-gov-navy mb-4 flex items-center gap-2">
-          <Icon name="MapPin" size={15} />
-          Топ регионов по объёму грантов
-        </h3>
-        <div className="space-y-3">
-          {topRegions.map((r, i) => (
-            <div key={r.name} className="flex items-center gap-4 animate-slide-up" style={{ animationDelay: `${i * 0.06}s` }}>
-              <div className="w-5 text-xs font-bold text-muted-foreground text-right">{i + 1}</div>
-              <div className="flex-1 min-w-0">
-                <div className="flex justify-between text-xs mb-1">
-                  <span className="font-medium text-foreground truncate">{r.name}</span>
-                  <span className="font-semibold text-gov-navy ml-2 shrink-0">{r.amount}</span>
-                </div>
-                <div className="progress-bar">
-                  <div className="progress-fill" style={{ width: `${r.progress}%` }} />
-                </div>
-              </div>
-              <div className="text-xs text-muted-foreground w-16 text-right">{r.count} грантов</div>
+          <div className="grid grid-cols-3 gap-3">
+            <div className="bg-green-50 border border-green-200 rounded p-3 text-center">
+              <div className="text-2xl font-bold text-green-700">{check_summary.ok || 0}</div>
+              <div className="text-xs text-green-700">Без замечаний</div>
             </div>
-          ))}
+            <div className="bg-amber-50 border border-amber-200 rounded p-3 text-center">
+              <div className="text-2xl font-bold text-amber-700">{check_summary.warning || 0}</div>
+              <div className="text-xs text-amber-700">С предупреждениями</div>
+            </div>
+            <div className="bg-red-50 border border-red-200 rounded p-3 text-center">
+              <div className="text-2xl font-bold text-red-700">{check_summary.error || 0}</div>
+              <div className="text-xs text-red-700">С ошибками</div>
+            </div>
+          </div>
         </div>
+      )}
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
+        {/* По видам грантов */}
+        <div className="bg-white border border-gov-line rounded p-5">
+          <h3 className="text-sm font-bold text-gov-navy mb-3">По видам грантов</h3>
+          {by_grant_type.length === 0 ? (
+            <div className="text-xs text-muted-foreground py-4 text-center">Нет данных</div>
+          ) : (
+            <div className="space-y-3">
+              {by_grant_type.map((g) => {
+                const usedPct = g.total_amount ? Math.round((g.total_used / g.total_amount) * 100) : 0;
+                return (
+                  <div key={g.code}>
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-xs font-semibold">{g.name}</span>
+                      <span className="text-xs text-muted-foreground">{g.grants_count} грантов · {formatRub(g.total_amount)}</span>
+                    </div>
+                    <div className="progress-bar"><div className="progress-fill" style={{ width: `${usedPct}%` }} /></div>
+                    <div className="text-xs text-muted-foreground mt-0.5">Освоено: {formatRub(g.total_used)} ({usedPct}%)</div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+
+        {/* Топ районов */}
+        <div className="bg-white border border-gov-line rounded p-5">
+          <h3 className="text-sm font-bold text-gov-navy mb-3">Топ районов по объёму</h3>
+          {by_district.length === 0 ? (
+            <div className="text-xs text-muted-foreground py-4 text-center">Нет данных</div>
+          ) : (
+            <div className="space-y-2.5">
+              {by_district.map((d) => (
+                <div key={d.name}>
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-xs font-semibold truncate pr-2">{d.name}</span>
+                    <span className="text-xs text-muted-foreground whitespace-nowrap">
+                      {d.producers_count} · {formatRub(d.total_amount)}
+                    </span>
+                  </div>
+                  <div className="h-1.5 bg-secondary rounded-full overflow-hidden">
+                    <div className="h-full bg-gov-navy" style={{ width: `${(d.total_amount / maxDistrict) * 100}%` }} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* По категориям техники */}
+      <div className="bg-white border border-gov-line rounded p-5 mb-5">
+        <h3 className="text-sm font-bold text-gov-navy mb-3 flex items-center gap-2">
+          <Icon name="Tractor" size={15} />
+          Закупленная техника по категориям
+        </h3>
+        {by_category.length === 0 ? (
+          <div className="text-xs text-muted-foreground py-6 text-center">
+            Пока нет данных о закупленной технике
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-xs">
+              <thead className="text-muted-foreground uppercase tracking-wide">
+                <tr className="border-b border-gov-line">
+                  <th className="text-left py-2 font-semibold">Категория</th>
+                  <th className="text-right py-2 font-semibold">Кол-во позиций</th>
+                  <th className="text-right py-2 font-semibold">Общая стоимость</th>
+                  <th className="text-right py-2 font-semibold">Средняя цена</th>
+                  <th className="text-left py-2 font-semibold pl-3">Доля</th>
+                </tr>
+              </thead>
+              <tbody>
+                {by_category.map((c) => (
+                  <tr key={c.code} className="border-b border-gov-line/50">
+                    <td className="py-2 font-semibold text-foreground">{c.name}</td>
+                    <td className="py-2 text-right">{c.items_count}</td>
+                    <td className="py-2 text-right font-semibold text-gov-navy">{formatRub(c.total_price)}</td>
+                    <td className="py-2 text-right text-muted-foreground">{formatRub(c.avg_price)}</td>
+                    <td className="py-2 pl-3">
+                      <div className="h-1.5 bg-secondary rounded-full overflow-hidden">
+                        <div className="h-full bg-blue-700" style={{ width: `${(c.total_price / maxCategory) * 100}%` }} />
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     </div>
   );

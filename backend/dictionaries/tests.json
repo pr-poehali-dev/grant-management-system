@@ -1,0 +1,23 @@
+{
+  "tests": [
+    {
+      "name": "OPTIONS preflight",
+      "method": "OPTIONS",
+      "path": "/",
+      "expectedStatus": 200
+    },
+    {
+      "name": "Returns all dictionaries",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200,
+      "expectedBody": {
+        "districts": "array",
+        "equipment_categories": "array",
+        "grant_types": "array",
+        "check_rules": "array"
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}
