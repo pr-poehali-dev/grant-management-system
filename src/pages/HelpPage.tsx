@@ -124,8 +124,9 @@ export default function HelpPage() {
             <div className="text-xs text-white/80 leading-relaxed mb-3">
               Не нашли ответ? Свяжитесь с технической поддержкой — ответим в течение 1 рабочего дня.
             </div>
-            <a href="tel:88007008090" className="block text-sm font-bold text-amber-400 mb-1">8 800 700-80-90</a>
-            <div className="text-xs text-white/60">Бесплатно, пн–пт 9:00–18:00 МСК</div>
+            <a href="tel:+78463321004" className="block text-sm font-bold text-amber-400 mb-1">8 (846) 332-10-04</a>
+            <a href="mailto:mcx@samregion.ru" className="block text-xs text-amber-400/80 mb-1 hover:underline">mcx@samregion.ru</a>
+            <div className="text-xs text-white/60">пн–чт 9:00–18:00, пт 9:00–17:00 (МСК+1)</div>
           </div>
         </div>
       </div>

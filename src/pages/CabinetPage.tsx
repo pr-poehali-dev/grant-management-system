@@ -18,16 +18,9 @@ const roleIcons = {
   admin: 'Settings',
 };
 
-const producerGrants = [
-  { id: 'АС-2024-0891', name: 'Агростартап 2024', amount: '₽ 4 200 000', status: 'approved', progress: 65, nextReport: '15 мая 2026' },
-  { id: 'СФ-2025-0112', name: 'Семейная ферма', amount: '₽ 12 500 000', status: 'review', progress: 0, nextReport: '—' },
-];
+const producerGrants: { id: string; name: string; amount: string; status: string; progress: number; nextReport: string }[] = [];
 
-const officerTasks = [
-  { id: 1, type: 'Проверка отчёта', subject: 'ИП Иванов А.В.', grant: 'АС-2024-0789', deadline: '28 апр 2026', priority: 'high' },
-  { id: 2, type: 'Рассмотрение заявки', subject: 'КФХ "Рассвет"', grant: 'СФ-2025-0201', deadline: '02 мая 2026', priority: 'medium' },
-  { id: 3, type: 'Запрос документов', subject: 'ООО "АгроПлюс"', grant: 'МТБ-2025-0045', deadline: '05 мая 2026', priority: 'low' },
-];
+const officerTasks: { id: number; type: string; subject: string; grant: string; deadline: string; priority: string }[] = [];
 
 const statusLabel: Record<string, string> = {
   approved: 'Одобрен',
@@ -74,14 +67,18 @@ export default function CabinetPage({ onNavigate, role, onRoleChange }: CabinetP
       {/* Profile card */}
       <div className="bg-white border border-gov-line rounded p-5 mb-6 flex flex-col md:flex-row items-start gap-5">
         <div className="w-14 h-14 rounded-full bg-gov-navy flex items-center justify-center shrink-0">
-          <span className="text-white text-xl font-black">ИВ</span>
+          <Icon name={roleIcons[role]} size={22} className="text-white" />
         </div>
         <div className="flex-1">
           <div className="font-bold text-gov-navy text-base mb-0.5">
-            {role === 'producer' ? 'Иванов Александр Владимирович' : role === 'officer' ? 'Петрова Мария Сергеевна' : 'Системный администратор'}
+            {roleLabels[role]}
           </div>
           <div className="text-xs text-muted-foreground mb-3">
-            {role === 'producer' ? 'ИНН: 773 812 456 890 · КФХ "Ивановское"' : role === 'officer' ? 'Отдел господдержки · Минсельхоз РФ' : 'Управление информационных систем'}
+            {role === 'producer'
+              ? 'Войдите через ЕСИА — данные подтянутся из Госуслуг'
+              : role === 'officer'
+                ? 'Министерство сельского хозяйства и продовольствия Самарской области'
+                : 'Управление информационных систем'}
           </div>
           <div className="flex flex-wrap gap-3">
             <div className="flex items-center gap-1.5 text-xs text-green-700 bg-green-50 border border-green-200 rounded px-2.5 py-1.5">
@@ -117,6 +114,17 @@ export default function CabinetPage({ onNavigate, role, onRoleChange }: CabinetP
             </button>
           </div>
 
+          {producerGrants.length === 0 && (
+            <div className="bg-white border border-gov-line rounded p-8 text-center">
+              <Icon name="Award" size={32} className="mx-auto text-muted-foreground/40 mb-2" />
+              <div className="text-sm text-muted-foreground mb-1">У вас пока нет грантов</div>
+              <div className="text-xs text-muted-foreground mb-4">Подайте заявку, чтобы получить государственную поддержку</div>
+              <button onClick={() => onNavigate('grants')}
+                className="text-xs bg-gov-navy text-white px-4 py-2 rounded hover:bg-gov-navy-light transition-colors">
+                Перейти к подаче заявки
+              </button>
+            </div>
+          )}
           {producerGrants.map((g, i) => (
             <div key={g.id} className="bg-white border border-gov-line rounded p-5 animate-slide-up" style={{ animationDelay: `${i * 0.08}s` }}>
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-4">
@@ -166,6 +174,17 @@ export default function CabinetPage({ onNavigate, role, onRoleChange }: CabinetP
             Задачи на проверку
           </h2>
           <div className="space-y-3">
+            {officerTasks.length === 0 && (
+              <div className="bg-white border border-gov-line rounded p-8 text-center">
+                <Icon name="Inbox" size={32} className="mx-auto text-muted-foreground/40 mb-2" />
+                <div className="text-sm text-muted-foreground mb-1">Нет задач на проверке</div>
+                <div className="text-xs text-muted-foreground mb-4">Откройте раздел «Проверка отчётов» для работы с входящими отчётами</div>
+                <button onClick={() => onNavigate('verification')}
+                  className="text-xs bg-gov-navy text-white px-4 py-2 rounded hover:bg-gov-navy-light transition-colors">
+                  Перейти к проверке
+                </button>
+              </div>
+            )}
             {officerTasks.map((t, i) => (
               <div key={t.id} className="bg-white border border-gov-line rounded p-4 flex items-center gap-4 animate-slide-up hover:border-blue-300 transition-colors cursor-pointer" style={{ animationDelay: `${i * 0.07}s` }}>
                 <div className={`w-2 h-2 rounded-full shrink-0 ${t.priority === 'high' ? 'bg-red-500' : t.priority === 'medium' ? 'bg-amber-500' : 'bg-green-500'}`} />

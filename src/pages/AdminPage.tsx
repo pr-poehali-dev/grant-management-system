@@ -1,13 +1,7 @@
 import { useState } from 'react';
 import Icon from '@/components/ui/icon';
 
-const users = [
-  { id: 1, name: 'Иванов Александр Владимирович', org: 'КФХ "Ивановское"', role: 'producer', inn: '773812456890', status: 'active', lastLogin: '27 апр 2026' },
-  { id: 2, name: 'Петрова Мария Сергеевна', org: 'Минсельхоз РФ', role: 'officer', inn: '—', status: 'active', lastLogin: '27 апр 2026' },
-  { id: 3, name: 'Смирнов Константин Андреевич', org: 'ИП Смирнов К.А.', role: 'producer', inn: '501234567891', status: 'active', lastLogin: '25 апр 2026' },
-  { id: 4, name: 'Козлова Наталья Романовна', org: 'КФХ "Рассвет"', role: 'producer', inn: '381298745612', status: 'blocked', lastLogin: '10 апр 2026' },
-  { id: 5, name: 'Соколов Андрей Викторович', org: 'Минсельхоз РФ', role: 'officer', inn: '—', status: 'active', lastLogin: '26 апр 2026' },
-];
+const users: { id: number; name: string; org: string; role: string; inn: string; status: string; lastLogin: string }[] = [];
 
 const roleLabel: Record<string, string> = {
   producer: 'Производитель',
@@ -30,13 +24,7 @@ const integrations = [
   { name: 'Росстат — API данных', status: 'error', lastSync: '25 апр 2026, 14:30', icon: 'AlertCircle' },
 ];
 
-const auditLog = [
-  { time: '10:42', user: 'Петрова М.С.', action: 'Принят отчёт ОТЧ-2026-0341', type: 'approve' },
-  { time: '10:15', user: 'Иванов А.В.', action: 'Подана заявка АС-2026-0022', type: 'create' },
-  { time: '09:58', user: 'Соколов А.В.', action: 'Запрошены документы по СФ-2026-0008', type: 'request' },
-  { time: '09:30', user: 'Система', action: 'Синхронизация с ФГИС «Меркурий» выполнена', type: 'system' },
-  { time: '08:15', user: 'Система', action: 'Обновление токенов ЕСИА выполнено', type: 'system' },
-];
+const auditLog: { time: string; user: string; action: string; type: string }[] = [];
 
 export default function AdminPage() {
   const [activeTab, setActiveTab] = useState('Пользователи');
@@ -90,6 +78,13 @@ export default function AdminPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gov-line">
+                {users.length === 0 && (
+                  <tr>
+                    <td colSpan={6} className="px-4 py-8 text-center text-xs text-muted-foreground">
+                      Список пользователей загружается из системы. Реальные данные будут доступны после подключения модуля управления учётными записями.
+                    </td>
+                  </tr>
+                )}
                 {users.map((u, i) => (
                   <tr key={u.id} className="hover:bg-secondary/40 transition-colors animate-slide-up" style={{ animationDelay: `${i * 0.05}s` }}>
                     <td className="px-4 py-3">
@@ -153,6 +148,11 @@ export default function AdminPage() {
             </button>
           </div>
           <div className="divide-y divide-gov-line">
+            {auditLog.length === 0 && (
+              <div className="px-4 py-8 text-center text-xs text-muted-foreground">
+                Журнал событий пуст. Записи появятся после действий пользователей в системе.
+              </div>
+            )}
             {auditLog.map((e, i) => (
               <div key={i} className="px-4 py-3 flex items-center gap-4 animate-slide-up text-sm" style={{ animationDelay: `${i * 0.05}s` }}>
                 <span className="font-mono text-xs text-muted-foreground w-10 shrink-0">{e.time}</span>

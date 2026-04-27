@@ -2,24 +2,24 @@ import Icon from '@/components/ui/icon';
 
 const leadership = [
   {
-    name: 'Абдалкин Алексей Петрович',
+    name: 'Министр',
     role: 'Министр сельского хозяйства и продовольствия Самарской области',
     phone: '8 (846) 332-10-04',
     email: 'mcx@samregion.ru',
-    initials: 'АА',
+    initials: 'МИН',
   },
   {
     name: 'Первый заместитель министра',
     role: 'Курирует направления растениеводства и государственной поддержки',
-    phone: '8 (846) 332-18-12',
-    email: 'dep1@mcx.samregion.ru',
+    phone: '8 (846) 332-10-04',
+    email: 'mcx@samregion.ru',
     initials: 'ЗМ',
   },
   {
     name: 'Заместитель министра',
     role: 'Животноводство, переработка, развитие сельских территорий',
-    phone: '8 (846) 332-19-30',
-    email: 'dep2@mcx.samregion.ru',
+    phone: '8 (846) 332-10-04',
+    email: 'mcx@samregion.ru',
     initials: 'ЗМ',
   },
 ];
@@ -34,10 +34,10 @@ const departments = [
 ];
 
 const facts = [
-  { value: '3,3 млн га', label: 'Площадь сельхозугодий' },
-  { value: '№ 4', label: 'В ПФО по объёму АПК' },
-  { value: '2 340', label: 'Получателей господдержки в 2026' },
-  { value: '₽ 3,8 млрд', label: 'Объём поддержки АПК в 2026' },
+  { value: '3,9 млн', label: 'Жителей Самарской области' },
+  { value: '37', label: 'Муниципалитетов в зоне поддержки' },
+  { value: '6', label: 'Видов государственных грантов' },
+  { value: '10', label: 'Правил автопроверки отчётов' },
 ];
 
 export default function AboutPage() {

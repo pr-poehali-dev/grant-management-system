@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import Icon from '@/components/ui/icon';
@@ -37,10 +37,26 @@ const navItems: { id: Section; label: string; icon: string; roles?: Role[] }[] =
   { id: 'contacts',     label: 'Контакты',          icon: 'Phone'      },
 ];
 
+const API_REPORTS = 'https://functions.poehali.dev/c01991df-d80f-4791-9733-5b2f58fb5b48';
+
 export default function App() {
   const [section, setSection] = useState<Section>('home');
   const [role, setRole] = useState<Role>('producer');
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [notifCount, setNotifCount] = useState(0);
+
+  // Реальный счётчик: количество новых отчётов на проверке (из БД)
+  useEffect(() => {
+    const load = () => {
+      fetch(`${API_REPORTS}?status=submitted`)
+        .then((r) => r.json())
+        .then((d) => setNotifCount(d?.stats?.new ?? 0))
+        .catch(() => setNotifCount(0));
+    };
+    load();
+    const t = setInterval(load, 60000);
+    return () => clearInterval(t);
+  }, []);
 
   const visibleNav = navItems.filter((item) => !item.roles || item.roles.includes(role));
 
@@ -96,9 +112,20 @@ export default function App() {
               {roleLabels[role]}
             </div>
             <AccessibilityPanel />
-            <button className="relative text-white/70 hover:text-white">
+            <button
+              onClick={() => navigate('verification')}
+              title={notifCount > 0 ? `Новых отчётов на проверку: ${notifCount}` : 'Нет новых уведомлений'}
+              className="relative text-white/70 hover:text-white"
+            >
               <Icon name="Bell" size={18} />
-              <span className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 rounded-full text-[9px] font-bold text-white flex items-center justify-center" style={{ backgroundColor: '#D52B1E' }}>3</span>
+              {notifCount > 0 && (
+                <span
+                  className="absolute -top-0.5 -right-0.5 min-w-[14px] h-[14px] px-1 rounded-full text-[9px] font-bold text-white flex items-center justify-center"
+                  style={{ backgroundColor: '#D52B1E' }}
+                >
+                  {notifCount > 99 ? '99+' : notifCount}
+                </span>
+              )}
             </button>
           </div>
         </header>
