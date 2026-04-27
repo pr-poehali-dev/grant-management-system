@@ -54,8 +54,8 @@ export default function ContactsPage() {
               <Icon name="Wheat" size={24} className="text-amber-400" />
             </div>
             <div>
-              <div className="font-black text-lg leading-tight">МСХ Самарской области</div>
-              <div className="text-xs text-white/60">Система управления господдержкой АПК — 2026</div>
+              <div className="font-black text-lg leading-tight">АСУГ СХ СО</div>
+              <div className="text-xs text-white/60">Автоматизированная система учёта и контроля расходования грантов в сельском хозяйстве Самарской области</div>
             </div>
           </div>
           <p className="text-sm text-white/80 leading-relaxed max-w-2xl mb-4">

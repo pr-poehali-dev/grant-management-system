@@ -109,19 +109,20 @@ export default function HomePage({ onNavigate }: HomePageProps) {
         <div className="relative max-w-5xl">
           <div className="flex items-center gap-2 mb-4">
             <span className="text-xs font-mono uppercase tracking-widest text-amber-400 border border-amber-400/40 px-2 py-0.5 rounded-sm">
-              Официальная система
+              АСУГ СХ СО
             </span>
-            <span className="text-xs text-white/40 font-mono">Самарская область</span>
+            <span className="text-xs text-white/40 font-mono">Самарская область · 2026</span>
           </div>
           <h1 className="text-4xl font-black leading-tight mb-3 tracking-tight">
-            Государственная поддержка<br />
-            АПК Самарской области — 2026
+            Автоматизированная система<br />
+            учёта и контроля расходования<br />
+            грантов в сельском хозяйстве
           </h1>
           <p className="text-white/70 text-base mb-2 max-w-2xl leading-relaxed">
             Министерство сельского хозяйства и продовольствия Самарской области
           </p>
           <p className="text-white/55 text-sm mb-8 max-w-2xl leading-relaxed">
-            Единая платформа для подачи заявок на гранты, субсидии, льготные кредиты и контроля отчётности сельхозпроизводителей региона.
+            Единая цифровая платформа для подачи заявок на гранты и субсидии, автоматизированного учёта расходования средств и контроля отчётности сельхозпроизводителей региона.
           </p>
           <div className="flex flex-wrap gap-3">
             <button
