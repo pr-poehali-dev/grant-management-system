@@ -1,5 +1,30 @@
+# АГРОГРАНТ — поддержка АПК Самарской области
+# https://агрогрант.рф
+
+User-agent: *
+Allow: /
+Disallow: /cabinet
+Disallow: /admin
+Disallow: /verification
+Disallow: /reports
+Disallow: /grants
+
+User-agent: Yandex
+Allow: /
+Disallow: /cabinet
+Disallow: /admin
+Disallow: /verification
+Disallow: /reports
+Disallow: /grants
+Clean-param: utm_source&utm_medium&utm_campaign&utm_content&utm_term
+
 User-agent: Googlebot
 Allow: /
+Disallow: /cabinet
+Disallow: /admin
+Disallow: /verification
+Disallow: /reports
+Disallow: /grants
 
 User-agent: Bingbot
 Allow: /
@@ -10,5 +35,5 @@ Allow: /
 User-agent: facebookexternalhit
 Allow: /
 
-User-agent: *
-Allow: /
+Sitemap: https://агрогрант.рф/sitemap.xml
+Host: агрогрант.рф
