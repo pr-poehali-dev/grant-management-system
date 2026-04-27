@@ -62,50 +62,50 @@
   }
 }
 
-/* ===== РЕЖИМ ДЛЯ СЛАБОВИДЯЩИХ ===== */
+/* ===== РЕЖИМ ДЛЯ СЛАБОВИДЯЩИХ — белый фон, высокий контраст ===== */
 body.accessible {
-  --background: 0 0% 0%;
-  --foreground: 60 100% 100%;
+  --background: 0 0% 100%;
+  --foreground: 0 0% 0%;
 
-  --card: 0 0% 8%;
-  --card-foreground: 60 100% 100%;
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 0%;
 
-  --popover: 0 0% 8%;
-  --popover-foreground: 60 100% 100%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 0 0% 0%;
 
-  --primary: 60 100% 60%;
-  --primary-foreground: 0 0% 0%;
+  --primary: 214 100% 28%;
+  --primary-foreground: 0 0% 100%;
 
-  --secondary: 0 0% 15%;
-  --secondary-foreground: 60 100% 100%;
+  --secondary: 0 0% 96%;
+  --secondary-foreground: 0 0% 0%;
 
-  --muted: 0 0% 15%;
-  --muted-foreground: 60 80% 90%;
+  --muted: 0 0% 94%;
+  --muted-foreground: 0 0% 20%;
 
-  --accent: 40 100% 55%;
-  --accent-foreground: 0 0% 0%;
+  --accent: 214 100% 28%;
+  --accent-foreground: 0 0% 100%;
 
-  --destructive: 0 100% 60%;
-  --destructive-foreground: 0 0% 0%;
+  --destructive: 0 90% 35%;
+  --destructive-foreground: 0 0% 100%;
 
-  --border: 0 0% 35%;
-  --input: 0 0% 25%;
-  --ring: 60 100% 60%;
+  --border: 0 0% 0%;
+  --input: 0 0% 30%;
+  --ring: 214 100% 28%;
 
-  --sidebar-background: 0 0% 5%;
-  --sidebar-foreground: 60 100% 100%;
-  --sidebar-primary: 60 100% 60%;
-  --sidebar-primary-foreground: 0 0% 0%;
-  --sidebar-accent: 0 0% 15%;
-  --sidebar-accent-foreground: 60 100% 100%;
-  --sidebar-border: 0 0% 25%;
+  --sidebar-background: 214 100% 28%;
+  --sidebar-foreground: 0 0% 100%;
+  --sidebar-primary: 0 0% 100%;
+  --sidebar-primary-foreground: 214 100% 28%;
+  --sidebar-accent: 214 80% 35%;
+  --sidebar-accent-foreground: 0 0% 100%;
+  --sidebar-border: 0 0% 100%;
 
-  --gov-navy: 0 0% 5%;
-  --gov-navy-light: 0 0% 15%;
-  --gov-gold: 40 100% 55%;
-  --gov-green: 120 100% 45%;
-  --gov-red: 0 100% 60%;
-  --gov-line: 0 0% 35%;
+  --gov-navy: 214 100% 28%;
+  --gov-navy-light: 214 80% 38%;
+  --gov-gold: 0 0% 25%;
+  --gov-green: 142 70% 25%;
+  --gov-red: 0 90% 35%;
+  --gov-line: 0 0% 0%;
 }
 
 body.accessible-large {
@@ -286,9 +286,9 @@ body.accessible-large .text-base {
   body.accessible .badge-blue,
   body.accessible .badge-red,
   body.accessible .badge-gray {
-    background-color: #000;
-    color: #ffd700;
-    border-color: #ffd700;
+    background-color: #fff;
+    color: #003791;
+    border: 2px solid #003791;
   }
 
   .badge-status-new {

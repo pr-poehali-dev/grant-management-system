@@ -14,13 +14,15 @@ interface Settings {
 const STORAGE_KEY = 'asuг_a11y';
 
 function loadSettings(): Settings {
+  // Принудительный сброс — всегда стартуем в обычной светлой теме
+  const def: Settings = { fontSize: 'normal', colorScheme: 'normal', lineHeight: false, noImages: false };
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) return JSON.parse(raw);
+    localStorage.removeItem(STORAGE_KEY);
+    document.body.classList.remove('accessible', 'accessible-large', 'accessible-xlarge');
   } catch {
     // ignore
   }
-  return { fontSize: 'normal', colorScheme: 'normal', lineHeight: false, noImages: false };
+  return def;
 }
 
 function applySettings(s: Settings) {
@@ -136,9 +138,9 @@ export default function AccessibilityPanel() {
                     className={`flex flex-col items-center gap-1.5 p-3 rounded border-2 transition-all ${settings.colorScheme === 'accessible' ? 'border-primary bg-primary/10' : 'border-border hover:border-primary/50'}`}
                   >
                     <div className="flex gap-1">
-                      <div className="w-4 h-4 rounded-sm bg-black border border-gray-600" />
-                      <div className="w-4 h-4 rounded-sm bg-yellow-300" />
-                      <div className="w-4 h-4 rounded-sm bg-white" />
+                      <div className="w-4 h-4 rounded-sm bg-white border border-black" />
+                      <div className="w-4 h-4 rounded-sm" style={{ backgroundColor: '#003791' }} />
+                      <div className="w-4 h-4 rounded-sm bg-black" />
                     </div>
                     <span className="text-xs font-medium text-foreground">Контрастная</span>
                   </button>
