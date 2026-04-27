@@ -2,38 +2,38 @@ import Icon from '@/components/ui/icon';
 
 const contacts = [
   {
-    dept: 'Техническая поддержка системы',
-    desc: 'Вопросы по работе платформы, авторизации, ошибкам',
-    phone: '8 800 700-80-90',
-    email: 'support@agrogrant.gov.ru',
-    hours: 'Пн–Пт, 9:00–18:00 МСК',
-    icon: 'Headphones',
-    color: 'border-blue-500',
-  },
-  {
-    dept: 'Отдел господдержки АПК',
-    desc: 'Консультации по условиям и требованиям грантов',
-    phone: '+7 (495) 608-08-00',
-    email: 'grants@mcx.gov.ru',
-    hours: 'Пн–Пт, 10:00–17:00 МСК',
+    dept: 'Министерство сельского хозяйства Самарской области',
+    desc: 'Общие вопросы господдержки АПК, гранты, субсидии, консультации',
+    phone: '8 (846) 332-10-04',
+    email: 'mcx@samregion.ru',
+    hours: 'Пн–Пт, 9:00–18:00',
     icon: 'Landmark',
     color: 'border-green-600',
   },
   {
-    dept: 'Отдел проверки отчётности',
-    desc: 'Вопросы по сдаче и проверке отчётных документов',
-    phone: '+7 (495) 608-09-11',
-    email: 'reports@mcx.gov.ru',
-    hours: 'Пн–Пт, 9:00–17:00 МСК',
-    icon: 'FileCheck',
+    dept: 'Отдел господдержки и субсидирования',
+    desc: 'Консультации по условиям грантов, приём заявок, разъяснения требований',
+    phone: '8 (846) 332-18-44',
+    email: 'support.apk@samregion.ru',
+    hours: 'Пн–Пт, 9:30–17:30',
+    icon: 'Headphones',
+    color: 'border-blue-500',
+  },
+  {
+    dept: 'Отдел льготного кредитования',
+    desc: 'Вопросы по льготным краткосрочным и инвестиционным кредитам АПК',
+    phone: '8 (846) 332-19-21',
+    email: 'credit.apk@samregion.ru',
+    hours: 'Пн–Пт, 10:00–17:00',
+    icon: 'CreditCard',
     color: 'border-amber-500',
   },
 ];
 
 const offices = [
-  { city: 'Москва (головной офис)', address: 'Орликов пер., д. 1/11, стр. 1', metro: 'Красные ворота', zip: '107139' },
-  { city: 'Краснодар', address: 'ул. Красная, д. 35', metro: null, zip: '350000' },
-  { city: 'Ростов-на-Дону', address: 'пр. Ворошиловский, д. 2', metro: null, zip: '344000' },
+  { city: 'Самара (главный офис)', address: 'ул. Молодогвардейская, д. 210', metro: null, zip: '443006' },
+  { city: 'Приём по вопросам господдержки', address: 'ул. Молодогвардейская, д. 210, каб. 308', metro: null, zip: '443006' },
+  { city: 'Портал МСХ Самарской области', address: 'mcx.samregion.ru', metro: null, zip: null },
 ];
 
 export default function ContactsPage() {
@@ -43,7 +43,7 @@ export default function ContactsPage() {
         <Icon name="Phone" size={20} />
         Контакты и информация о системе
       </h1>
-      <p className="text-sm text-muted-foreground mb-8">Министерство сельского хозяйства Российской Федерации</p>
+      <p className="text-sm text-muted-foreground mb-8">Министерство сельского хозяйства и продовольствия Самарской области</p>
 
       {/* About */}
       <div className="bg-gov-navy text-white rounded p-6 mb-6 relative overflow-hidden">
@@ -54,17 +54,18 @@ export default function ContactsPage() {
               <Icon name="Wheat" size={24} className="text-amber-400" />
             </div>
             <div>
-              <div className="font-black text-lg leading-tight">АгроГрант</div>
-              <div className="text-xs text-white/60">Государственная информационная система</div>
+              <div className="font-black text-lg leading-tight">МСХ Самарской области</div>
+              <div className="text-xs text-white/60">Система управления господдержкой АПК — 2026</div>
             </div>
           </div>
           <p className="text-sm text-white/80 leading-relaxed max-w-2xl mb-4">
-            АгроГрант — официальная государственная система управления грантами агропромышленного комплекса Российской Федерации. Разработана по заказу Министерства сельского хозяйства РФ в соответствии с постановлением Правительства №1906 от 14.12.2021.
+            Официальная система Министерства сельского хозяйства и продовольствия Самарской области для управления грантами, субсидиями и льготными кредитами АПК. Все меры господдержки 2026 года опубликованы на портале{' '}
+            <a href="https://mcx.samregion.ru/category/gospodderzhka/mery-gospodderzhki-2026/" target="_blank" rel="noopener noreferrer" className="text-amber-400 hover:underline">mcx.samregion.ru</a>.
           </p>
           <div className="flex flex-wrap gap-4 text-xs text-white/60">
-            <span className="flex items-center gap-1.5"><Icon name="Shield" size={12} /> Версия системы: 2.4.1</span>
-            <span className="flex items-center gap-1.5"><Icon name="Calendar" size={12} /> Обновлена: апрель 2026</span>
-            <span className="flex items-center gap-1.5"><Icon name="Lock" size={12} /> Сертификат ФСТЭК: №12/2024</span>
+            <span className="flex items-center gap-1.5"><Icon name="MapPin" size={12} /> Самара, ул. Молодогвардейская, 210</span>
+            <span className="flex items-center gap-1.5"><Icon name="Phone" size={12} /> 8 (846) 332-10-04</span>
+            <span className="flex items-center gap-1.5"><Icon name="Globe" size={12} /> mcx.samregion.ru</span>
           </div>
         </div>
       </div>

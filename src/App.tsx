@@ -64,8 +64,8 @@ export default function App() {
                 <Icon name="Wheat" size={16} className="text-white" />
               </div>
               <div className="leading-tight">
-                <div className="text-white font-black text-sm tracking-tight">АгроГрант</div>
-                <div className="text-white/50 text-xs hidden sm:block">Система управления грантами АПК</div>
+                <div className="text-white font-black text-sm tracking-tight">МСХ Самарской области</div>
+                <div className="text-white/50 text-xs hidden sm:block">Господдержка АПК · 2026</div>
               </div>
             </button>
           </div>
@@ -165,7 +165,7 @@ export default function App() {
 
             {/* Footer */}
             <footer className="bg-gov-navy text-white/50 text-xs px-6 py-3 flex flex-col sm:flex-row items-center justify-between gap-2 shrink-0">
-              <span>© 2026 Министерство сельского хозяйства Российской Федерации · АгроГрант v2.4.1</span>
+              <span>© 2026 Министерство сельского хозяйства и продовольствия Самарской области · mcx.samregion.ru</span>
               <div className="flex items-center gap-4">
                 <button onClick={() => navigate('help')} className="hover:text-white transition-colors">Документация</button>
                 <button onClick={() => navigate('contacts')} className="hover:text-white transition-colors">Обратная связь</button>

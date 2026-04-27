@@ -5,8 +5,10 @@ const applications = [
   { id: 'АС-2026-0021', type: 'Агростартап', applicant: 'КФХ "Солнечное"', amount: '₽ 5 800 000', date: '22 апр 2026', status: 'review' },
   { id: 'СФ-2026-0008', type: 'Семейная ферма', applicant: 'ИП Смирнов К.А.', amount: '₽ 18 000 000', date: '19 апр 2026', status: 'new' },
   { id: 'АС-2026-0019', type: 'Агростартап', applicant: 'КФХ "Заречное"', amount: '₽ 3 200 000', date: '15 апр 2026', status: 'approved' },
-  { id: 'МТБ-2025-0047', type: 'Развитие МТБ', applicant: 'СПК "Восток"', amount: '₽ 120 000 000', date: '02 апр 2026', status: 'rejected' },
+  { id: 'СПСК-2026-0005', type: 'Грант СПСК', applicant: 'СПСК "Волга-Агро"', amount: '₽ 48 000 000', date: '10 апр 2026', status: 'review' },
+  { id: 'СУБ-2026-0041', type: 'Несвязанная поддержка', applicant: 'ООО "АгроСамара"', amount: '₽ 2 140 000', date: '05 апр 2026', status: 'approved' },
   { id: 'СФ-2025-0031', type: 'Семейная ферма', applicant: 'ИП Козлова Н.Р.', amount: '₽ 9 700 000', date: '28 мар 2026', status: 'completed' },
+  { id: 'КАП-2025-0012', type: 'Компенсация CAPEX', applicant: 'ООО "Тепличный"', amount: '₽ 15 200 000', date: '20 мар 2026', status: 'rejected' },
 ];
 
 const statusLabel: Record<string, string> = {
@@ -24,7 +26,7 @@ const statusClass: Record<string, string> = {
   new: 'badge-status-new',
 };
 
-const grantTypes = ['Все виды', 'Агростартап', 'Семейная ферма', 'Развитие МТБ'];
+const grantTypes = ['Все виды', 'Агростартап', 'Семейная ферма', 'Грант СПСК', 'Несвязанная поддержка', 'Компенсация CAPEX'];
 
 interface GrantsPageProps {
   onNavigate: (section: string) => void;
@@ -154,12 +156,23 @@ export default function GrantsPage({ onNavigate }: GrantsPageProps) {
 
             <div className="px-6 py-5">
               {formStep === 1 && (
-                <div className="space-y-3">
-                  <label className="block text-xs font-semibold text-foreground mb-2">Выберите вид гранта</label>
-                  {['Агростартап (до ₽ 6 млн)', 'Семейная ферма (до ₽ 30 млн)', 'Развитие МТБ (до ₽ 500 млн)'].map((t) => (
-                    <label key={t} className="flex items-center gap-3 p-3 border border-gov-line rounded cursor-pointer hover:border-gov-navy transition-colors">
-                      <input type="radio" name="grantType" className="accent-gov-navy" />
-                      <span className="text-sm">{t}</span>
+                <div className="space-y-2">
+                  <label className="block text-xs font-semibold text-foreground mb-3">Выберите меру государственной поддержки</label>
+                  {[
+                    { label: 'Агростартап', sub: 'до ₽ 7 млн · КФХ и ИП, начинающие фермеры', deadline: 'до 30 мая 2026' },
+                    { label: 'Семейная ферма', sub: 'до ₽ 30 млн · семейные животноводческие фермы', deadline: 'до 30 мая 2026' },
+                    { label: 'Грант СПСК', sub: 'до ₽ 70 млн · сельскохозяйственные кооперативы', deadline: 'до 30 мая 2026' },
+                    { label: 'Несвязанная поддержка растениеводства', sub: 'субсидия на 1 га · зерновые, масличные, кормовые', deadline: 'до 30 апр 2026' },
+                    { label: 'Компенсация CAPEX', sub: 'до 25% затрат · строительство объектов АПК', deadline: 'до 15 июн 2026' },
+                    { label: 'Льготный кредит АПК', sub: 'до 5% годовых · через уполномоченные банки', deadline: 'весь год' },
+                  ].map((t) => (
+                    <label key={t.label} className="flex items-center gap-3 p-3 border border-gov-line rounded cursor-pointer hover:border-gov-navy transition-colors">
+                      <input type="radio" name="grantType" className="accent-gov-navy shrink-0" />
+                      <div className="flex-1 min-w-0">
+                        <div className="text-sm font-semibold">{t.label}</div>
+                        <div className="text-xs text-muted-foreground">{t.sub}</div>
+                      </div>
+                      <span className="text-xs text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded shrink-0">{t.deadline}</span>
                     </label>
                   ))}
                 </div>
@@ -193,7 +206,7 @@ export default function GrantsPage({ onNavigate }: GrantsPageProps) {
               {formStep === 3 && (
                 <div className="space-y-3">
                   <p className="text-xs text-muted-foreground mb-3">Прикрепите необходимые документы в формате PDF, DOC или XLS</p>
-                  {['Бизнес-план', 'Правоустанавливающие документы', 'Справка об отсутствии долгов', 'Выписка из ЕГРИП / ЕГРЮЛ'].map((doc) => (
+                  {['Бизнес-план (с финансовой моделью)', 'Выписка из ЕГРИП / ЕГРЮЛ (не старше 30 дней)', 'Справка ФНС об отсутствии задолженности', 'Правоустанавливающие документы на земли с/х назначения', 'Документ об образовании руководителя', 'Согласие на обработку персональных данных'].map((doc) => (
                     <div key={doc} className="flex items-center justify-between p-3 border border-gov-line rounded">
                       <div className="flex items-center gap-2">
                         <Icon name="FileText" size={14} className="text-muted-foreground" />
