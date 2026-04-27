@@ -122,12 +122,6 @@ export default function HomePage({ onNavigate }: HomePageProps) {
       <section className="bg-gov-navy text-white px-6 lg:px-12 py-10 relative overflow-hidden">
         <div className="relative max-w-5xl mx-auto">
           <div className="flex items-center gap-2 mb-4 flex-wrap">
-            <span
-              className="text-xs font-semibold uppercase tracking-wider text-white px-3 py-1 rounded-sm"
-              style={{ backgroundColor: RED }}
-            >
-              Официальный государственный сервис
-            </span>
             <span className="text-xs text-white/55">Самарская область · 2026</span>
           </div>
 
