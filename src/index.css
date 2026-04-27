@@ -267,6 +267,30 @@ body.accessible-large .text-base {
     transition: width 0.8s ease;
   }
 
+  /* Гос-бейджи — нейтральный стиль (синий/красный/серый) */
+  .badge-blue {
+    background-color: #e6efff;
+    color: #003791;
+    border: 1px solid #c5d6f5;
+  }
+  .badge-red {
+    background-color: #fde8e6;
+    color: #a8221a;
+    border: 1px solid #f5c5c0;
+  }
+  .badge-gray {
+    background-color: #f0f0f0;
+    color: #4a4a4a;
+    border: 1px solid #d4d4d4;
+  }
+  body.accessible .badge-blue,
+  body.accessible .badge-red,
+  body.accessible .badge-gray {
+    background-color: #000;
+    color: #ffd700;
+    border-color: #ffd700;
+  }
+
   .badge-status-new {
     background-color: #dbeafe;
     color: #1e3a8a;
