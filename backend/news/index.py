@@ -26,7 +26,40 @@ def cors() -> Dict[str, str]:
         'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type, X-Auth-Token, X-Authorization',
         'Content-Type': 'application/json',
+        'X-Content-Type-Options': 'nosniff',
+        'Referrer-Policy': 'strict-origin-when-cross-origin',
     }
+
+
+def get_ip(event: Dict[str, Any]) -> str:
+    rc = event.get('requestContext') or {}
+    ident = rc.get('identity') or {}
+    return ident.get('sourceIp') or ''
+
+
+def rate_limit_check(conn, ip: str, endpoint: str, limit: int = 60, window_sec: int = 60) -> bool:
+    if not ip:
+        return True
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                "INSERT INTO api_rate_limits (ip, endpoint, hits, window_start) "
+                "VALUES (%s, %s, 1, CURRENT_TIMESTAMP) "
+                "ON CONFLICT (ip, endpoint) DO UPDATE SET "
+                "hits = CASE WHEN api_rate_limits.window_start < NOW() - (INTERVAL '1 second' * %s) THEN 1 "
+                "ELSE api_rate_limits.hits + 1 END, "
+                "window_start = CASE WHEN api_rate_limits.window_start < NOW() - (INTERVAL '1 second' * %s) THEN CURRENT_TIMESTAMP "
+                "ELSE api_rate_limits.window_start END "
+                "RETURNING hits",
+                (ip[:64], endpoint[:80], window_sec, window_sec)
+            )
+            row = cur.fetchone()
+        conn.commit()
+        return row[0] <= limit if row else True
+    except Exception:
+        try: conn.rollback()
+        except Exception: pass
+        return True
 
 
 def b64url_decode(s: str) -> bytes:
@@ -204,6 +237,12 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         conn = psycopg2.connect(os.environ['DATABASE_URL'])
         try:
             params = event.get('queryStringParameters') or {}
+            ip = get_ip(event)
+
+            limit = 30 if method != 'GET' else 120
+            if not rate_limit_check(conn, ip, 'news', limit=limit, window_sec=60):
+                return {'statusCode': 429, 'headers': cors(),
+                        'body': json.dumps({'error': 'Слишком много запросов, подождите минуту'}, ensure_ascii=False)}
 
             if method == 'GET':
                 only_published = params.get('all') != '1'

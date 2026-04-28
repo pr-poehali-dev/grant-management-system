@@ -14,12 +14,26 @@ export interface AppUser {
   producer_id: number | null;
 }
 
+export interface LoginResult {
+  ok: boolean;
+  error?: string;
+  needCaptcha?: boolean;
+  twoFactorRequired?: boolean;
+  locked?: boolean;
+  devCode?: string;
+}
+
 interface AuthContextValue {
   user: AppUser | null;
   loading: boolean;
   token: string | null;
-  login: (email: string, password: string) => Promise<{ ok: boolean; error?: string }>;
-  register: (data: RegisterData) => Promise<{ ok: boolean; error?: string }>;
+  login: (
+    email: string,
+    password: string,
+    opts?: { captchaToken?: string; captchaAnswer?: string; twoFactorCode?: string }
+  ) => Promise<LoginResult>;
+  register: (data: RegisterData) => Promise<{ ok: boolean; error?: string; needCaptcha?: boolean }>;
+  fetchCaptcha: () => Promise<{ question: string; token: string } | null>;
   logout: () => void;
   refresh: () => Promise<void>;
 }
@@ -32,6 +46,8 @@ export interface RegisterData {
   org_name?: string;
   inn?: string;
   role?: 'producer' | 'officer' | 'admin';
+  captchaToken?: string;
+  captchaAnswer?: string;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -66,15 +82,43 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => { refresh(); }, [refresh]);
 
-  const login = async (email: string, password: string) => {
+  const fetchCaptcha = async () => {
+    try {
+      const r = await fetch(`${API_AUTH}?action=captcha`);
+      if (!r.ok) return null;
+      return await r.json();
+    } catch {
+      return null;
+    }
+  };
+
+  const login = async (
+    email: string,
+    password: string,
+    opts?: { captchaToken?: string; captchaAnswer?: string; twoFactorCode?: string }
+  ): Promise<LoginResult> => {
     try {
       const r = await fetch(`${API_AUTH}?action=login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password, ...opts }),
       });
       const d = await r.json();
-      if (!r.ok) return { ok: false, error: d.error || 'Ошибка входа' };
+
+      if (r.status === 202 && d.twoFactorRequired) {
+        return { ok: false, twoFactorRequired: true, error: d.message, devCode: d.devCode };
+      }
+
+      if (!r.ok) {
+        return {
+          ok: false,
+          error: d.error || 'Ошибка входа',
+          needCaptcha: !!d.needCaptcha,
+          twoFactorRequired: !!d.twoFactorRequired,
+          locked: !!d.locked,
+        };
+      }
+
       localStorage.setItem(TOKEN_KEY, d.token);
       setToken(d.token);
       setUser(d.user);
@@ -92,7 +136,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         body: JSON.stringify(data),
       });
       const d = await r.json();
-      if (!r.ok) return { ok: false, error: d.error || 'Ошибка регистрации' };
+      if (!r.ok) return { ok: false, error: d.error || 'Ошибка регистрации', needCaptcha: !!d.needCaptcha };
       localStorage.setItem(TOKEN_KEY, d.token);
       setToken(d.token);
       setUser(d.user);
@@ -109,7 +153,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, token, login, register, logout, refresh }}>
+    <AuthContext.Provider value={{ user, loading, token, login, register, fetchCaptcha, logout, refresh }}>
       {children}
     </AuthContext.Provider>
   );

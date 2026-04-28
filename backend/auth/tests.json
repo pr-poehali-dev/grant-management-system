@@ -1,25 +1,10 @@
 {
   "tests": [
     { "name": "OPTIONS", "method": "OPTIONS", "path": "/", "expectedStatus": 200 },
-    {
-      "name": "Register requires email",
-      "method": "POST",
-      "path": "/?action=register",
-      "body": {},
-      "expectedStatus": 400
-    },
-    {
-      "name": "Login requires email",
-      "method": "POST",
-      "path": "/?action=login",
-      "body": {},
-      "expectedStatus": 400
-    },
-    {
-      "name": "ME without token returns 401",
-      "method": "GET",
-      "path": "/",
-      "expectedStatus": 401
-    }
+    { "name": "Captcha", "method": "GET", "path": "/?action=captcha", "expectedStatus": 200 },
+    { "name": "Register no captcha", "method": "POST", "path": "/?action=register", "body": {"email": "x@y.z", "password": "Pass1234", "full_name": "Test"}, "expectedStatus": 400 },
+    { "name": "Login requires email", "method": "POST", "path": "/?action=login", "body": {}, "expectedStatus": 400 },
+    { "name": "ME without token returns 401", "method": "GET", "path": "/", "expectedStatus": 401 },
+    { "name": "Audit without token returns 401", "method": "GET", "path": "/?action=audit", "expectedStatus": 401 }
   ]
 }

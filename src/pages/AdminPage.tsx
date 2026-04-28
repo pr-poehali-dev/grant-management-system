@@ -1,5 +1,8 @@
 import { useState } from 'react';
 import Icon from '@/components/ui/icon';
+import NewsAdmin from '@/components/admin/NewsAdmin';
+import DocumentsAdmin from '@/components/admin/DocumentsAdmin';
+import SecurityAudit from '@/components/admin/SecurityAudit';
 
 const users: { id: number; name: string; org: string; role: string; inn: string; status: string; lastLogin: string }[] = [];
 
@@ -14,7 +17,7 @@ const roleBadge: Record<string, string> = {
   admin: 'bg-amber-50 text-amber-700',
 };
 
-const tabs = ['Пользователи', 'Интеграции', 'Журнал событий', 'Настройки'];
+const tabs = ['Контент: Новости', 'Контент: Документы', 'Безопасность', 'Пользователи', 'Интеграции', 'Журнал событий', 'Настройки'];
 const integrations = [
   { name: 'ЕСИА (Госуслуги)', status: 'connected', lastSync: '27 апр 2026, 08:15', icon: 'Shield' },
   { name: 'ФГИС «Меркурий»', status: 'connected', lastSync: '27 апр 2026, 06:00', icon: 'Database' },
@@ -52,6 +55,7 @@ export default function AdminPage() {
 
       {activeTab === 'Контент: Новости' && <NewsAdmin />}
       {activeTab === 'Контент: Документы' && <DocumentsAdmin />}
+      {activeTab === 'Безопасность' && <SecurityAudit />}
 
       {activeTab === 'Пользователи' && (
         <div>

@@ -7,6 +7,13 @@
     <meta name="language" content="Russian"/>
     <meta name="google" content="notranslate"/>
     <meta name="robots" content="notranslate"/>
+
+    <!-- Безопасность: защита от XSS, clickjacking, MIME-sniffing -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff"/>
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin"/>
+    <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=(), payment=()"/>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: data: blob:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.poehali.dev https://mc.yandex.ru https://*.yandex.ru https://yastatic.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https: wss:; frame-src https://mc.yandex.ru https://*.yandex.ru; frame-ancestors 'self'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests"/>
+
     <title>АГРОГРАНТ — поддержка АПК Самарской области</title>
     <meta name="description" content="АГРОГРАНТ — автоматизированная система учёта и контроля расходования грантов в сельском хозяйстве Самарской области. Подача отчётности, проверка целевого использования средств, прозрачная аналитика для Минсельхозпрода и сельхозтоваропроизводителей."/>
     <meta name="keywords" content="АГРОГРАНТ, гранты АПК, Самарская область, Минсельхозпрод, агростартап, семейная ферма, СПСК, сельское хозяйство, отчётность, проверка целевого использования"/>
