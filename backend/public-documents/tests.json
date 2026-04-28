@@ -1,0 +1,10 @@
+{
+  "tests": [
+    { "name": "OPTIONS", "method": "OPTIONS", "path": "/", "expectedStatus": 200 },
+    { "name": "Public list works", "method": "GET", "path": "/", "expectedStatus": 200 },
+    { "name": "Filter by section", "method": "GET", "path": "/?section=template", "expectedStatus": 200 },
+    { "name": "Create requires auth", "method": "POST", "path": "/", "body": {"title": "x"}, "expectedStatus": 403 },
+    { "name": "Update requires auth", "method": "PUT", "path": "/?id=1", "body": {"title": "x"}, "expectedStatus": 403 },
+    { "name": "Delete requires auth", "method": "DELETE", "path": "/?id=1", "expectedStatus": 403 }
+  ]
+}
