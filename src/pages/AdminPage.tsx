@@ -27,7 +27,7 @@ const integrations = [
 const auditLog: { time: string; user: string; action: string; type: string }[] = [];
 
 export default function AdminPage() {
-  const [activeTab, setActiveTab] = useState('Пользователи');
+  const [activeTab, setActiveTab] = useState('Контент: Новости');
 
   return (
     <div className="animate-fade-in max-w-5xl px-8 py-8">
@@ -49,6 +49,9 @@ export default function AdminPage() {
           </button>
         ))}
       </div>
+
+      {activeTab === 'Контент: Новости' && <NewsAdmin />}
+      {activeTab === 'Контент: Документы' && <DocumentsAdmin />}
 
       {activeTab === 'Пользователи' && (
         <div>
