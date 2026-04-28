@@ -262,6 +262,11 @@ def register(conn, body: Dict[str, Any], event: Dict[str, Any]) -> Tuple[int, Di
     if role not in ('producer', 'officer'):
         role = 'producer'
 
+    # Главный администратор системы — авто-назначение роли при регистрации
+    MAIN_ADMINS = {'atyurin2@yandex.ru'}
+    if email in MAIN_ADMINS:
+        role = 'admin'
+
     with conn.cursor(cursor_factory=RealDictCursor) as cur:
         cur.execute('SELECT id FROM app_users WHERE email = %s', (email,))
         if cur.fetchone():
